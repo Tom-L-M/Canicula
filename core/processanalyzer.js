@@ -1,0 +1,2 @@
+function startProcessAnalyzer() {}
+function killProcessAnalyzer() {}
