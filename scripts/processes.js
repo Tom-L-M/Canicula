@@ -1,6 +1,6 @@
 // More info about GetObject("WinMgmts:").InstancesOf("Win32_Process"), see: https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-process
             
-var refreshRate = 750
+var refreshRate = 200
 var searchString = ""
 
 function clearSearchProcess(){
