@@ -7,7 +7,7 @@ TEST.begin = function () {
     return [fso, local];
 }
 
-TEST.log = function(engine, local, proc) {
+TEST.log = function (engine, local, proc) {
     var tf = engine.CreateTextFile(local + proc.ProcessId + 'deb.txt', true);
         tf.Write(
             "{ " +
@@ -30,5 +30,16 @@ TEST.log = function(engine, local, proc) {
             "   \n Write Transfer Count" + proc.WriteTransferCount + 
             "\n} "
         );
+        tf.Close();
+    return;
+}
+
+TEST.logArr = function (engine, local, arr, arrname) {
+    var tf = engine.CreateTextFile(local + 'arr' + arrname + '.txt', true);
+    tf.Write( "ARRAY [ " + arrname + " ] : ");
+    for (var i = 0; i < arr.length; i++) {
+        tf.Write("\n  " + arr[i].Name);
+    }
     tf.Close();
+    return;
 }
