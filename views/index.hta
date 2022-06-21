@@ -30,12 +30,13 @@
     <body>
         <!-- KEEP SCRIPT ORDER : 
             /libs/ > /core/ > /scripts/
-            namespace > helpers > *utils > trigger > *sentry > local scripts 
+            config > helpers > *utils > trigger > *sentry > local scripts 
         -->
-        <script language="JavaScript" src="../libs/namespace.js"></script>
+        <script language="JavaScript" src="../libs/config.js"></script>
         <script language="JavaScript" src="../libs/helpers.js"></script>
+        <script language="JavaScript" src="../test/testlog.js"></script> <!-- TODO: REMOVE TESTING DEPENDENCIES -->
         <script language="JavaScript" src="../libs/procutils.js"></script>
-        <!-- <script language="JavaScript" src="../core/trigger.js"></script> -->
+        <script language="JavaScript" src="../core/trigger.js"></script>
         <script language="JavaScript" src="../core/procsentry.js"></script>
         <script language="JavaScript" src="../core/filesentry.js"></script>
         <script language="JavaScript" src="../scripts/index.js"></script>
