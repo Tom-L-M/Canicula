@@ -75,15 +75,21 @@ var Env = {
         var home = wshEnv("HOMEPATH");
         return home;
     },
+    getWorkingDir: function () {
+        var fso = File.startEngine();
+        return fso.GetFolder(".").Path;
+    },
+    getRootDir: function () {
+        var base = Env.getWorkingDir();
+        base = base.substring(0, base.lastIndexOf('\\') + 1);
+        return base;
+    },
     mountPath: function (path) {
         var u = Env.getUser()
         var v = u.substring(u.indexOf("\\", 2) + 1);
         var n = path.replace("%USERPROFILE%", v);
+        n = n.replace("%ROOTDIR%", Env.getRootDir());
         return n;
-    },
-    getWorkingDir: function () {
-        var fso = File.startEngine();
-        return fso.GetFolder(".").Path;
     }
 }
 
