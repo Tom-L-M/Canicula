@@ -10,9 +10,23 @@ configs.locations = [
     "%ROOTDIR%\\test"
 ]
 configs.decoyCheckInterval = (1000/configs.locations.length);
-configs.dangerousProcesses = [];
+configs.dangerousProcesses = [
+    "Registry", 
+    "cmd.exe",
+    "taskkill.exe",
+    "sc.exe",
+    "fsutil.exe",
+    "wbadmin.exe",
+    "bcdedit.exe",
+    "schtasks.exe",
+    "regedit.exe"
+];
 configs.safeProcesses = {
-    names: ["mshta.exe"],
+    names: [
+        "System", 
+        "System Idle Process", 
+        "mshta.exe"
+    ],
     companies: []
 }
 configs.procDangerMarks = [ //all factors used to measure danger level of a process
