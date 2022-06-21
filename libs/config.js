@@ -6,7 +6,8 @@ configs.decoyFilename = "__decoy.txt",
 configs.decoyContent = "trigger",
 configs.locations = [
     //"C:/Users/%USERPROFILE%/Documents"
-    "C:\\Users\\%USERPROFILE%\\Desktop\\pride_current\\test"
+    //"C:\\Users\\%USERPROFILE%\\Desktop\\pride_current\\test"
+    "%ROOTDIR%\\test"
 ]
 configs.decoyCheckInterval = (1000/configs.locations.length);
 configs.dangerousProcesses = [];
