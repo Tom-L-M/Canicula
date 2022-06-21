@@ -49,11 +49,6 @@ procUtils.classificateProcess = function (proc) {
             }
         ) > configs.maxProcDangerLevel) {
             procUtils.suspectProcSet.push(proc);
-            
-            //TODO: Remove testing dependencies
-            var base = TEST.begin();
-            TEST.log(base[0], base[1], proc);
-
         }
     }
 
@@ -66,11 +61,21 @@ procUtils.verifyProcDangerLevel = function () {}
 
 procUtils.verifyProcDanger = function () {
     var procEnum = procUtils.getRunningProcesses();
+    
+    //TODO: Remove testing dependencies
+    var base = TEST.begin();
+
     for ( ; !procEnum.atEnd(); procEnum.moveNext()) {
         var proc = procEnum.item();
         procUtils.classificateProcess(proc);
 
+        //TODO: Remove testing dependencies
+        TEST.log(base[0], base[1], proc);
     }
+    
+    //TODO: Remove testing dependencies
+    TEST.logArr(base[0], base[1], procUtils.dangerProcSet, "DANGER");
+    TEST.logArr(base[0], base[1], procUtils.suspectProcSet, "SUSPECT");
     
     /* Flow:
         if (processo pertence à lista de processos perigosos) {
