@@ -3,15 +3,24 @@
 
 //TODO: declarar as variáveis com nomes dos namespaces no arquivo 'namespace.js' e mover configurações para um arquivo 'config.js' dentro do diretório '/core/'
 
+//TODO: Verificar se existe mais de um drive (buscar pelo 'D') e se houver, mapear um certo número de locais para posicionar decoys, de forma a proteger todos os drives locais (remotos não)
+
+//this adds support to a pseudo 'includes()' array method
+Array.prototype.includes = function(str) { for (var i = 0; i < this.length; i++) { if (this[i] == str) { return true; } } return false; }
+
 var Shell = {
-    startEngine: function () { return new ActiveXObject("WScript.Shell"); }
+    startEngine: function () { 
+        return new ActiveXObject("WScript.Shell");
+    }
 }
 
 var File = {
-    startEngine: function () { return new ActiveXObject("Scripting.FileSystemObject"); },
+    startEngine: function () {
+        return new ActiveXObject("Scripting.FileSystemObject");
+    },
     formatPath: function (p) { return p.replace('/', '\\'); },
     verifyExistance: function(fpath) {
-        var fso = this.startEngine();
+        var fso = File.startEngine();
         var b = formatPath(fpath);
         var p = b.substring(0, fpath.lastIndexOf('\\'));
         var f = b.substring(fpath.lastIndexOf('\\'));
@@ -71,6 +80,10 @@ var Env = {
         var v = u.substring(u.indexOf("\\", 2) + 1);
         var n = path.replace("%USERPROFILE%", v);
         return n;
+    },
+    getWorkingDir: function () {
+        var fso = File.startEngine();
+        return fso.GetFolder(".").Path;
     }
 }
 
@@ -84,6 +97,9 @@ var Sys = {
     }
 }
 
+var App = {
+    log: function (content) {} //use this to log the app results
+}
 
 // TODO: Migrate methods below to respective scripts (*utils: procSentryUtils / triggerUtils / fileSentryUtils) and create namespaces for it
 function emergencyTrigger() {
@@ -113,14 +129,15 @@ function deleteDecoyFiles(locs) {
         }
     }
     if (counter != 0) { alert("WARNING:" + counter + " decoy files were not found"); }
-    
     return counter;
 }
 
 function createDecoyFiles(locs, content) {
     // create decoy files in specified locs
     var tf;
+    
     var fso = File.startEngine();
+    
     for (var i = 0; i < locs.length; i++) {
         var pa = Env.mountPath(locs[i]);
         if (fso.FolderExists(pa)) {
