@@ -3,12 +3,12 @@ var TEST = {}
 TEST.begin = function () {
     var fso = File.startEngine();
     var local = Env.getWorkingDir();
-    local = Env.mountPath(local.substring(0, local.lastIndexOf('\\') + 1) + "\\test\\log\\");
+    local = Env.mountPath(local.substring(0, local.lastIndexOf('\\')) + "\\test\\log\\");
     return [fso, local];
 }
 
-TEST.log = function (engine, local, proc) {
-    var tf = engine.CreateTextFile(local + proc.ProcessId + 'deb.txt', true);
+TEST.log = function (engine, loc, proc) {
+    var tf = engine.CreateTextFile(loc + proc.ProcessId + 'deb.txt', true);
         tf.Write(
             "{ " +
             "   \n Description: " + proc.Description + 
@@ -34,8 +34,8 @@ TEST.log = function (engine, local, proc) {
     return;
 }
 
-TEST.logArr = function (engine, local, arr, arrname) {
-    var tf = engine.CreateTextFile(local + 'arr' + arrname + '.txt', true);
+TEST.logArr = function (engine, loc, arr, arrname) {
+    var tf = engine.CreateTextFile(loc + 'arr' + arrname + '.txt', true);
     tf.Write( "ARRAY [ " + arrname + " ] : ");
     for (var i = 0; i < arr.length; i++) {
         tf.Write("\n  " + arr[i].Name);
