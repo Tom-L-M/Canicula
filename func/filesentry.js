@@ -3,7 +3,6 @@
         start: function() {
             var counter = 0;
             Vws.disableServiceButtons("filesentry", "start");
-            Vws.enableServiceButtons("filesentry", "kill");
             FileSUtils.createDecoyFiles(Cfg.locations, Cfg.decoyContent);
             setTimeout( function base() {
                 var now = new Date().getTime();
@@ -22,7 +21,8 @@
                         return 1;
                     }
                 } , Cfg.decoyCheckInterval );
-            }, 3000) //sleeps for 3 seconds, to create the decoy files properly
+                Vws.enableServiceButtons("filesentry", "kill"); //waits till the 3000ms timeout happens, to avoid a bug
+            }, 3000); //sleeps for 3 seconds, to create the decoy files properly
             return 0;
         },
         kill: function() {
