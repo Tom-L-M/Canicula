@@ -13,7 +13,6 @@ function terminateProcess(processId, processName){
     var defPass = '';
     var pass = prompt('This action requires elevated privileges. Insert your password to continue: \n Action: killing process ' + processName, defPass);
     if (pass === null || pass === defPass) { getSysRunningProcesses(); return; } //in case user clicks on 'cancel' button or leaves the field empty
-    
     var fso = new ActiveXObject("Scripting.FileSystemObject");
     var tf = fso.OpenTextFile("./env/main_pass.auth.can", 1); //1 is for reading, 2 is for writing into file
     var authCred = tf.ReadLine();
