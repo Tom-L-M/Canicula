@@ -23,5 +23,3 @@ Eng.StartAppEngines();
 //TODO: Create a function that uses the Save() method to create a shortcut to the application on the desktop
 // [https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/k5x59zft(v=vs.84)]
 //TODO: Verificar se existe mais de um drive (buscar pelo 'D' e 'E') e se houver, mapear um certo número de locais para posicionar decoys, de forma a proteger todos os drives locais (remotos não)
-
-//TODO BUG : O contador do filesentry continua a contagem se for iniciado e encerrado antes do intervalo (3 segundos)
