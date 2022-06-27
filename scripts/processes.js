@@ -15,7 +15,7 @@ function terminateProcess(processId, processName){
     if (pass === null || pass === defPass) { getSysRunningProcesses(); return; } //in case user clicks on 'cancel' button or leaves the field empty
     
     var fso = new ActiveXObject("Scripting.FileSystemObject");
-    var tf = fso.OpenTextFile("./env/proc_term.auth.can", 1); //1 is for reading, 2 is for writing into file
+    var tf = fso.OpenTextFile("./env/main_pass.auth.can", 1); //1 is for reading, 2 is for writing into file
     var authCred = tf.ReadLine();
     var userPass = Crypto.sha256(pass)
     tf.Close();
