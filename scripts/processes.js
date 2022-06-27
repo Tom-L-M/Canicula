@@ -10,11 +10,21 @@ function clearSearchProcess(){
 }
 
 function terminateProcess(processId, processName){
-    if (confirm('Are you sure you want to terminate the process "' + processName + '"?')) {
+    var defPass = '';
+    var pass = prompt('This action requires elevated privileges. Insert your password to continue: \n Action: killing process ' + processName, defPass);
+    if (pass === null || pass === defPass) { getSysRunningProcesses(); return; } //in case user clicks on 'cancel' button or leaves the field empty
+    
+    var fso = new ActiveXObject("Scripting.FileSystemObject");
+    var tf = fso.OpenTextFile("./env/proc_term.auth.can", 1); //1 is for reading, 2 is for writing into file
+    var authCred = tf.ReadLine();
+    var userPass = Crypto.sha256(pass)
+    tf.Close();
+    if (userPass === authCred) {
         var WshShell = new ActiveXObject("WScript.Shell");
         var oExec = WshShell.Run("taskkill /F /PID " + processId, 0, true);
         getSysRunningProcesses()
-    }
+    } else { alert("Password is Incorrect"); getSysRunningProcesses() }
+    return;
 }
 
 function getProcessListAndDisplayInHTML()
