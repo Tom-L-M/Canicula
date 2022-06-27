@@ -3,10 +3,11 @@
 ## [0.1.0] ⇒ [0.1.1] | 2022-06-22
 ### Fixed
     > Caminhos sendo gerados com barras duplicadas
-      Local: \canicula-main\test\testlog.js ⇒ linha 6
+        Local: \canicula-main\test\testlog.js ⇒ linha 6
+
 
 ## [0.1.1] ⇒ [0.2.0] | 2022-06-26
-   ### Changed
+### Changed
     > Reestruturação completa do sistema de importação de scripts
     > Separação de blocos de código em arquivos diferentes
     > Alteração do local do arquivo 'entry-point' (app.hta) para a pasta 'root' da aplicação 
@@ -24,3 +25,10 @@
       (Fazia o sistema continuar ativo, mesmo após pressionar o botão de parada)
 ### Security
     > Sistema de encerramento de processos alterado para exigir senha
+### Files Altered:
+    ('+' for added files | '-' for removed files | '~' for changed files)
+    + /libs/crypto.js
+    + /env/main_pass.auth.can
+    ~ /app.hta
+    ~ /scripts/processes.js
+    ~ /views/processes.hta
