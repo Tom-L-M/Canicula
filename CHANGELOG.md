@@ -26,7 +26,7 @@
 ### Security
     > Sistema de encerramento de processos alterado para exigir senha
 ### Files Altered:
-    ('+' for added files | '-' for removed files | '~' for changed files)
+    ('+' for added files | '-' for removed ones | '~' for changed ones)
     + /libs/crypto.js
     + /env/main_pass.auth.can
     ~ /app.hta
