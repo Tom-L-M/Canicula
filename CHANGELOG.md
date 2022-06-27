@@ -14,15 +14,14 @@
 ### Added 
     > Criação de um sistema de importação dinâmica e modular de scripts
     > Criação de namespaces para separação semântica de código em módulos
-
-## [0.2.0] ⇒ [0.2.1] | 2022-06-26
-### Fixed
-    > Bug no inicializador do FileSentry corrigido.
-      (Fazia o sistema continuar ativo, mesmo após pressionar o botão de parada)
-
-### Fixed
-### Added
-### Changed
 ### Deprecated
+    > Versões prévias a 0.2.0 perderam compatibilidade com a versão atual (a atualização é obrigatória)
 ### Removed
+    > Imagens desnecessárias foram removidas, de forma a melhorar o desempenho do programa
+
+## [0.2.0] ⇒ [0.2.1] | 2022-06-27
+### Fixed
+    > Bug no inicializador do FileSentry corrigido
+      (Fazia o sistema continuar ativo, mesmo após pressionar o botão de parada)
 ### Security
+    > Sistema de encerramento de processos alterado para exigir senha
