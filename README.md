@@ -6,7 +6,7 @@
 ### CURRENT BUILD STATES : 
     [ Unstable | Alpha | Testing ]
 
-> ALERT: Backward compatibility broken in version 0.2.0, previous versions are deprecated, and update is mandatory.
+> ALERT: Backward compatibility was broken in version 0.2.0, previous versions are deprecated, and update is mandatory.
 
 > Warning 1: be careful with shortcuts, they don't always point to where you think they point -_- 
 
