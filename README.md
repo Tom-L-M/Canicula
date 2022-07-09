@@ -1,7 +1,7 @@
 # canicula
 
 ### CURRENT VERSION :     
-    [ 0.2.1 ]
+    [ 0.2.2 ]
 
 ### CURRENT BUILD STATES : 
     [ Unstable | Alpha | Testing ]
