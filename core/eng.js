@@ -16,5 +16,8 @@
             return ac.substring(0, ac.length - sep.length); // Removes the extra separator chars at the end
         }
     }
+
+    Eng.StartAppEngines(); //starts engines automatically (explicit starting is not necessary anymore)
+    
     return Eng; 
 }).call();
