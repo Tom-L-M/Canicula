@@ -28,7 +28,6 @@
 ### Security
     > Sistema de encerramento de processos alterado para exigir senha
 ### Files Altered:
-    ('+' for added files | '-' for removed ones | '~' for changed ones)
     + /libs/crypto.js
     + /env/main_pass.auth.can
     ~ /app.hta
@@ -41,6 +40,8 @@
     > Sistema de engines da aplicação agora se inicializa automaticamente por padrão 
         (inicialização explícita com 'Eng.StartAppEngines()' não é mais necessária)
 ### Files Altered:
-    ('+' for added files | '-' for removed ones | '~' for changed ones)
     ~ /app.js
     ~ /core/eng.js
+
+## INFO:
+    > For altered files: ('+' for added files | '-' for removed ones | '~' for changed ones)
