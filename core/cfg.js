@@ -1,10 +1,11 @@
 (function () {
     var Cfg = {}
-        Cfg.filesentrytimeout = 0,
-        Cfg.procsentrytimeout = 0,
-        Cfg.procsentryInterval = 1000,
-        Cfg.decoyFilename = "__canicula_decoy.txt",
-        Cfg.decoyContent = "trigger",
+        Cfg.mainAppPasswordPath = "./env/main.auth.can";
+        Cfg.filesentrytimeout = 0;
+        Cfg.procsentrytimeout = 0;
+        Cfg.procsentryInterval = 1000;
+        Cfg.decoyFilename = "__canicula_decoy.txt";
+        Cfg.decoyContent = "trigger";
         Cfg.locations = [
             //"C:/Users/%USERPROFILE%/Documents"
             //"C:\\Users\\%USERPROFILE%\\Desktop\\pride_current\\test"

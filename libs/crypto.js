@@ -1,4 +1,4 @@
-// (function () { //uncomment this and the last 2 lines to export this with the custom 'Import(script)' method
+ (function () { //uncomment this and the last 2 lines to export this with the custom 'Import(script)' method
     var Crypto = {}
     Crypto.sha256 = function (s) {
         var chrsz  = 8; 
@@ -96,5 +96,5 @@
         s = Utf8Encode(s); 
         return binb2hex(core_sha256(str2binb(s), s.length * chrsz)); 
     }
-    // return Crypto;
-// }).call();
+    return Crypto;
+}).call();
