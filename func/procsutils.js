@@ -65,9 +65,10 @@
             ProcSUtils.classificateProcess(proc);
 
             //TODO: Remove testing dependencies
-            TEST.log(base[0], base[1], proc);
+            TEST.log(proc);
         }
         //TODO: Remove testing dependencies
+        TEST.write(base[0], base[1]);
         TEST.logArr(base[0], base[1], ProcSUtils.dangerProcSet, "DANGER");
         TEST.logArr(base[0], base[1], ProcSUtils.suspectProcSet, "SUSPECT");
         
