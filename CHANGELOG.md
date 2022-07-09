@@ -38,7 +38,8 @@
 
 ## [0.2.1] ⇒ [0.2.2] | 2022-07-08
 ### Changed
-    > Sistema de engines da aplicação agora se inicializa automaticamente por padrão (inicialização explícita com 'Eng.StartAppEngines()' não é mais necessária)
+    > Sistema de engines da aplicação agora se inicializa automaticamente por padrão 
+        (inicialização explícita com 'Eng.StartAppEngines()' não é mais necessária)
 ### Files Altered:
     ('+' for added files | '-' for removed ones | '~' for changed ones)
     ~ /app.js
