@@ -47,8 +47,8 @@
 ## [0.2.2] ⇒ [0.2.3] | 2022-07-12
 ### Changed
     > Sistema de logs de testes alterado para produzir resultados em formato CSV
-    
-
+### Files Altered:
+    ~ /test/testlog.js
 
 
 
