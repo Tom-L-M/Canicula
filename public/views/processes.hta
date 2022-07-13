@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <HTA:APPLICATION 
+            ID="eHTA" 
+            APPLICATIONNAME="canicula"
+            NAVIGABLE="yes"
+            ICON="../assets/appicon.ico" 
+            MINIMIZEBUTTON="yes"
+            MAXIMIZEBUTTON="yes" 
+            BORDER="" 
+            BORDERSTYLE="normal" 
+            CAPTION="yes" 
+            SHOWINTASKBAR="yes" 
+            INNERBORDER=""
+            SCROLL="yes" 
+            SCROLLFLAT="yes"
+            SINGLEINSTANCE="yes"
+            SELECTION="no"
+            SYSMENU="yes"
+            WINDOWSTATE="normal"
+        ></HTA:APPLICATION>
+        <title>Canicula</title>
+        <link rel="stylesheet" href="../styles/global.css">
+        <link rel="stylesheet" href="../styles/processes.css">
+    </head>
+
+    <body scroll="yes">
+        <script language="JavaScript" src="../../app.js"></script> 
+        <!-- TODO: mudar isso, para essa view não importar todo o backend de JS, e sim só a página crypto.js (a única necessária) -->
+        <script language="JavaScript" src="../scripts/processes.js"></script>
+        
+        <a href="../../app.hta">Main Page</a><br/>
+        <input id="searchProcessName" type="text" onClick="this.select();"></input>
+        <button onclick="clearSearchProcess()">Clear Search</button>
+        <br/><br/>
+        <div style="height:90%; overflow:auto; width:100%" id="processTableDisplay"></div>
+    </body>
+</html>

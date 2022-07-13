@@ -1,7 +1,7 @@
 (function () {
     var Trg = {}
     Trg.emergency = function () {
-        alert("aaa");
+        alert("ALERTA");
         return 0;
     }
 

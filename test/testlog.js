@@ -68,7 +68,29 @@
         var tf = engine.CreateTextFile(loc + 'arr' + arrname + '.txt', true);
         tf.Write( "ARRAY [ " + arrname + " ] : ");
         for (var i = 0; i < arr.length; i++) {
-            tf.Write("\n  " + arr[i].Name);
+            if (arrname === "IPCRM") { tf.Write("\n  " + arr[i]) ;}
+            else { 
+                tf.Write(
+                    "\n" 
+                    + arr[i].Name +','
+                    + arr[i].Description + ','
+                    + arr[i].ExecutablePath + ','
+                    + arr[i].ProcessId +','
+                    + arr[i].ParentProcessId +','
+                    + arr[i].Priority +','
+                    + arr[i].ThreadCount +','
+                    + arr[i].ReadOperationCount +','
+                    + arr[i].ReadTransferCount +','
+                    + arr[i].WriteOperationCount +','
+                    + arr[i].WriteTransferCount + ','
+                    + arr[i].OtherOperationCount +','
+                    + arr[i].OtherTransferCount +','
+                    + arr[i].VirtualSize +','
+                    + arr[i].PeakVirtualSize +','
+                    + arr[i].WorkingSetSize +','
+                    + arr[i].PeakWorkingSetSize
+                ); 
+            }
         }
         tf.Close();
         return;

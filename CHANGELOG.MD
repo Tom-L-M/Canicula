@@ -45,13 +45,70 @@
 
 
 ## [0.2.2] ⇒ [0.2.3] | 2022-07-12
+### Added
+    > Algoritmos de categorização de processos implementados: IPCRM(v2) e FRAR
 ### Changed
     > Sistema de logs de testes alterado para produzir resultados em formato CSV
 ### Files Altered:
     ~ /test/testlog.js
+    ~ /core/trg.js
+    ~ /func/procsentry.js
+    ~ /func/procsutils.js
+    ~ /app.hta
+    ~ /app.js
 
 
+## [0.2.3] ⇒ [0.2.4] | 2022-07-12
+### Fixed
+    > Correção de bugs da versão 0.2.3
+### Files Altered:
+    ~ /test/testlog.js
+    ~ /func/procsentry.js
+    ~ /func/procsutils.js
 
-    
-## INFO:
-    > For altered files: ('+' for added files | '-' for removed ones | '~' for changed ones)
+
+## [0.2.4] ⇒ [0.3.0] | 2022-07-13
+### Changed
+    > hierarquia de diretórios alterada, para incluir todos os arquivos de UI e de componentes front-end no diretório 'public'
+### Deprecated
+    > As alterações na hierarquia de diretórios forçaram a quebra de compatibilidade com versões anteriores
+    > versõaes anteriores a esta (0.3.0) agora estão obsoletas
+### Files Altered:
+    - /scripts/index.js
+    - /scripts/processes.js
+    - /styles/global.css
+    - /styles/index.css
+    - /styles/processes.css
+    - /views/processes.hta
+    + /public/scripts/index.js
+    + /public/scripts/processes.js
+    + /public/styles/global.css
+    + /public/styles/index.css
+    + /public/styles/processes.css
+    + /public/views/processes.hta
+    ~ /public/views/processes.hta
+    ~ /app.hta
+
+
+## [0.3.0] ⇒ [0.3.1] | 2022-07-13
+### Fixed
+    > Correção de bugs no sistema de logs dos índices IPCRM(v2)
+        (Gerava resultados indefinidos no arquivo de log)
+### Files Altered:
+    ~ /func/procsutils.js
+    ~ /test/testlog.js
+
+
+## [0.3.1] ⇒ [1.3.2] | 2022-07-13
+### Added
+    > Suporte (polifill) à funções nativas implementadas sobre Arrays (sumUp() e getAverage())
+    > Base de cálculo para comparação de valores IPCRM(v2)
+### Changed
+    > Formato de versionamento do projeto alterado para comformidade com os padrões ECMA e com a engine Node-Semver
+        (Versão '0' no campo 'major' não pode existir, logo, a numeração desta versão foi alterada de 0.3.2 para 1.3.2)
+    > Estado do programa alterado de 'unstable | alpha' para 'stable | dev' devido ao lançamento do patch major da versão 1
+### Files Altered:
+    ~ /core/eng.js
+    ~ /test/testlog.js
+    ~ /func/procsutils.js
+    ~ /README.MD
