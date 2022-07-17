@@ -15,8 +15,8 @@
                         verif: counter 
                     });
                     if (FileSUtils.verifyDecoyFiles(Cfg.locations) > 0) { 
-                        //clearInterval(Cfg.filesentrytimeout); //TODO: Disabled because of testing
-                        //FileSUtils.deleteDecoyFiles(Cfg.locations); //TODO: Disabled because of testing
+                        clearInterval(Cfg.filesentrytimeout);
+                        FileSUtils.deleteDecoyFiles(Cfg.locations); 
                         Trg.emergency("Decoy files were not found, system is compromised. Verify locations below for malware: " + Cfg.locations); 
                         return 1;
                     }

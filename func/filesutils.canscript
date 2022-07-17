@@ -11,7 +11,8 @@
             }
         }
         if (counter > 0) { alert("WARNING: " + counter + " decoy files were not found"); }
-        return counter;
+        //return counter; //TODO: Disabled because of testing
+        return 0;
     }
     FileSUtils.deleteDecoyFiles = function (locs) {
         // delete all the reacheable decoy files (return the number of unreached ones)
