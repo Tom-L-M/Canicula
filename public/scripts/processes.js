@@ -51,7 +51,7 @@ function getProcessListAndDisplayInHTML()
             tableRowsHTML += '<tr>'
                             + '<td style="width:200px">'
                                 + '<button onclick=\'terminateProcess(' + proc.ProcessID.toString() + ', "' + proc.Name + '")\'>'
-                                    + '<img class="icon" height="15px" width="15px" src="../assets/process_kill_icon.png"/>'
+                                    + '<img class="icon" height="15px" width="15px" src="../../assets/process_kill_icon.png"/>'
                                 + '</button></td>'
                             + '<td>' + proc.ProcessID
                             + '</td><td>' + proc.ParentProcessID

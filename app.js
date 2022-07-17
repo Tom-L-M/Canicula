@@ -2,25 +2,23 @@ var Import = function (f) { return eval((new ActiveXObject("Scripting.FileSystem
 
 // Modules (path reference is 'app.hta')          // # Dependencies    # Name                 # Description
 // Zero-Level Modules (zero dependencies)
-var Eng = Import('./core/eng.js');               // ; []              ; Engines              ; Includes ActiveX Engine objects (Shell and Fso)
-var Cfg = Import('./core/cfg.js');               // ; []              ; Configs              ; Configurations file
-var Trg = Import('./core/trg.js');               // ; []              ; Trigger              ; Application triggers to kill processes
+var Eng = Import('./core/eng.canscript');               // ; []              ; Engines              ; Includes ActiveX Engine objects (Shell and Fso)
+var Cfg = Import('./core/cfg.canscript');               // ; []              ; Configs              ; Configurations file
+var Trg = Import('./core/trg.canscript');               // ; []              ; Trigger              ; Application triggers to kill processes
 //Low-Level Modules (core-only dependencies)
-var Vws = Import('./core/vws.js');               // ; [cfg]           ; App View             ; App views rendering custom methods
-var Fso = Import('./core/fso.js');               // ; [eng]           ; FileSysObject        ; FileSystemObject custom methods
-var Env = Import('./core/env.js');               // ; [eng]           ; Environment          ; Environment custom methods
-var Sys = Import('./core/sys.js');               // ; [eng]           ; System               ; System custom methods
+var Vws = Import('./core/vws.canscript');               // ; [cfg]           ; App View             ; App views rendering custom methods
+var Fso = Import('./core/fso.canscript');               // ; [eng]           ; FileSysObject        ; FileSystemObject custom methods
+var Env = Import('./core/env.canscript');               // ; [eng]           ; Environment          ; Environment custom methods
+var Sys = Import('./core/sys.canscript');               // ; [eng]           ; System               ; System custom methods
 //Low-Level library Modules
-var Crypto = Import('./libs/crypto.js');         // ; []              ; Crypto               ; Namespace for SHA-256 hashing and criptographic resources
-
+var Crypto = Import('./libs/crypto.canscript');         // ; []              ; Crypto               ; Namespace for SHA-256 hashing and criptographic resources
 // Test-Level Modules (experimental)
-var TEST = Import('./test/testlog.js'); //TODO: Test deps
-
+var TEST = Import('./test/testlog.canscript'); //TODO: Test deps
 // High-Level Modules (many dependencies)
-var ProcSUtils = Import('./func/procsutils.js'); // ; [cfg,eng]       ; ProcSentry utils
-var FileSUtils = Import('./func/filesutils.js'); // ; [cfg,eng,env]   ; FileSentry utils 
-var ProcSentry = Import('./func/procsentry.js'); // ; [cfg,trg,vws]   ; ProcSentry manager 
-var FileSentry = Import('./func/filesentry.js'); // ; [cfg,trg,vws]   ; FileSentry manager 
+var ProcSUtils = Import('./func/procsutils.canscript'); // ; [cfg,eng]       ; ProcSentry utils
+var FileSUtils = Import('./func/filesutils.canscript'); // ; [cfg,eng,env]   ; FileSentry utils 
+var ProcSentry = Import('./func/procsentry.canscript'); // ; [cfg,trg,vws]   ; ProcSentry manager 
+var FileSentry = Import('./func/filesentry.canscript'); // ; [cfg,trg,vws]   ; FileSentry manager 
 
 //TODO: create a function that verifies the software integrity before starting, getting the hash of all files, and comparing with an hash kept in a file
 //TODO: Create a function that uses the Save() method to create a shortcut to the application on the desktop

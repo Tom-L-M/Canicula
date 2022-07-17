@@ -106,9 +106,24 @@
 ### Changed
     > Formato de versionamento do projeto alterado para comformidade com os padrões ECMA e com a engine Node-Semver
         (Versão '0' no campo 'major' não pode existir, logo, a numeração desta versão foi alterada de 0.3.2 para 1.3.2)
-    > Estado do programa alterado de 'unstable | alpha' para 'stable | dev' devido ao lançamento do patch major da versão 1
+    > Estado do programa alterado de 'unstable | alpha' para 'stable | dev' devido ao lançamento do patch major estável da versão 1
 ### Files Altered:
     ~ /core/eng.js
     ~ /test/testlog.js
     ~ /func/procsutils.js
     ~ /README.MD
+
+
+## [1.3.2] ⇒ [1.3.3] | 2022-07-14
+### Fixed
+    > Correção de bug nos caminhos de imagens e ícones
+### Files Altered:
+    ~ /public/views/processes.hta
+
+## [1.3.3] ⇒ [1.3.4] | 2022-07-17
+### Fixed
+    > Correção de bugs pós teste com ransomware
+### Security
+    > Alteração das extensões de arquivos 'core' do programa de JS para 'canscript', para evitar que sejam encriptados
+### Files Altered:
+    ~ all
