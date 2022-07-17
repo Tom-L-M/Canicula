@@ -1,0 +1,10 @@
+(function () {
+    var Trg = {}
+    Trg.emergency = function (message) {
+        alert("ALERTA : ATIVIDADE MALICIOSA DETECTADA");
+        alert(message);
+        return 0;
+    }
+
+    return Trg;
+}).call();
