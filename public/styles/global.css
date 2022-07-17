@@ -1,9 +1,0 @@
-body {
-    background-color: whitesmoke;
-}
-.icon {
-    border: none;
-}
-.icon:hover {
-    color:red; /* Actually does nothing, just to not make this ruleset empty */
-}
