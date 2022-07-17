@@ -10,7 +10,7 @@
                 if (!fso.FileExists(file)) { counter++; }
             }
         }
-        if (counter > 0) { alert("WARNING: " + counter + " decoy files were not found"); }
+        //if (counter > 0) { alert("WARNING: " + counter + " decoy files were not found"); } //TODO: Disabled because of testing
         //return counter; //TODO: Disabled because of testing
         return 0;
     }
