@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <HTA:APPLICATION 
+            ID="eHTA" 
+            APPLICATIONNAME="canicula"
+            NAVIGABLE="yes"
+            ICON="./assets/appicon.ico.canicon" 
+            MINIMIZEBUTTON="yes"
+            MAXIMIZEBUTTON="yes" 
+            BORDER="" 
+            BORDERSTYLE="normal" 
+            CAPTION="yes" 
+            SHOWINTASKBAR="yes" 
+            INNERBORDER=""
+            SCROLL="yes" 
+            SCROLLFLAT="yes"
+            SINGLEINSTANCE="yes"
+            SELECTION="no"
+            SYSMENU="yes"
+            WINDOWSTATE="normal"
+            VERSION="1.0"
+        ></HTA:APPLICATION> 
+        <title> Canicula - Home Page </title>
+
+        <link rel="stylesheet" href="./public/styles/global.css">
+        <link rel="stylesheet" href="./public/styles/index.css">
+
+    </head>
+    <body>
+        <script language="JavaScript" src="./app.js"></script>
+        <script language="JavaScript" src="./public/scripts/index.js"></script>
+
+        <div class="container">
+            <!-- <a href="./public/views/processes.hta">Process Manager</a><br/> -->
+            <div class="service-starters">
+                <div id="filesentry-start-container">
+                    <button id="filesentry-start" onclick="FileSentry.start();" language="JavaScript">  Start file sentry <img class="icon" src=""/>  </button>   
+                    <button id="filesentry-kill" disabled onclick="FileSentry.kill();">  Kill file sentry <img class="icon" src=""/>  </button>     
+                </div>
+                <div id="procsentry-start-container">
+                    <button id="procsentry-start" onclick="ProcSentry.start();" language="JavaScript">  Start process sentry <img class="icon" src=""/>  </button>   
+                    <button id="procsentry-kill" disabled onclick="ProcSentry.kill();">  Kill process sentry <img class="icon" src=""/>  </button>     
+                </div>
+            </div>              
+            <div class="service-status"> 
+                <p id="filesentry-status-label"> File Sentry: </p>
+                <div id="filesentry-status"></div> 
+                
+                <p id="procsentry-status-label"> Process Sentry: </p>
+                <div id="procsentry-status"></div> 
+            </div>
+            <code id="config-status"></code>
+        </div>
+
+
+        <!-- TODO: TESTING -->
+        <button onclick="Trg.emergency(0, ProcSUtils.suspectProcSet)" language="JavaScript"> Emergency </button>   
+        <button onclick="alert(Sys.Reg.Read('HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\Steam', true))" language="JavaScript"> Reg Read </button>  
+
+    </body>
+</html>

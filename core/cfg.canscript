@@ -1,0 +1,60 @@
+(function () {
+    var Cfg = {}
+        Cfg.mainAppPasswordPath = "./env/main.auth.cansec";
+        Cfg.filesentrytimeout = 0;
+        Cfg.procsentrytimeout = 0;
+        Cfg.procsentryInterval = 1000;
+        Cfg.decoyFilename = "__.candec.txt";
+        Cfg.decoyContent = "trigger";
+        Cfg.locations = [
+            "C:\\Users\\%USERPROFILE%\\Documents",
+            "C:\\Users\\%USERPROFILE%\\Desktop",
+            "C:\\Users\\%USERPROFILE%\\Pictures",
+            "C:\\Users\\%USERPROFILE%\\Music",
+            "C:\\Users\\%USERPROFILE%\\Downloads",
+            "C:\\Users\\%USERPROFILE%\\Videos",
+            "C:\\Users\\%USERPROFILE%\\AppData\\Local",
+            "C:\\Users\\%USERPROFILE%",
+            "%ROOTDIR%" //to ensure program integrity
+        ]
+        Cfg.decoyCheckInterval = (1000/Cfg.locations.length); //all files are verified every second
+        Cfg.dangerousProcesses = [
+            "Registry", "cmd.exe", "taskkill.exe",
+            "sc.exe", "fsutil.exe", "wbadmin.exe", 
+            "bcdedit.exe", "schtasks.exe", "regedit.exe"
+        ];
+        Cfg.safeProcesses = {
+            names: [ 
+                "System", 
+                "System Idle Process", 
+                "mshta.exe",
+                "wininit.exe",
+                "winlogon.exe",
+                "services.exe",
+                "svchost.exe",
+                "csrss.exe",
+                "lsass.exe",
+                "fontdrvhost.exe",
+                "explorer.exe",
+                "smss.exe",
+                "dwm.exe",
+                "smartscreen.exe"
+            ],
+            path: "C:\\Windows",
+            paths: [
+                "C:\\Windows",
+                "C:\\Program Files"
+            ]
+        }
+        Cfg.IPCRMvalues = {
+            ThreadCount: 1.75,
+            WriteTransferCount: 1.5,
+            WriteOperationCount: 2,
+            ReadTransferCount: 1.5,
+            ReadOperationCount: 2,
+            OtherTransferCount: 0.625,
+            OtherOperationCount: 0.625,
+            ReductFactor: 10 //só pra tirar a média (com a soma dos valores acima)
+        }
+    return Cfg;
+}).call();

@@ -1,0 +1,102 @@
+(function () {
+    var ProcSUtils = {}
+    ProcSUtils.temp = {}
+    ProcSUtils.temp.FRAR = 0;
+    ProcSUtils.temp.IPCRM = 0;
+
+    ProcSUtils.dangerProcSet = []; // list with the dangerous system processes running
+    ProcSUtils.suspectProcSet = []; // list of suspect process running
+    ProcSUtils.IPCRMlist = []; // list of all IPCRM bases 
+    ProcSUtils.getRunningProcesses = function () { return new Enumerator(GetObject("WinMgmts:").InstancesOf("Win32_Process")); }
+    ProcSUtils.resetLists = function() { ProcSUtils.dangerProcSet = []; ProcSUtils.suspectProcSet = []; ProcSUtils.IPCRMlist = []; return; }
+
+    ProcSUtils.calculateFRAR = function(proc) { return ((proc.ReadOperationCount * proc.ReadTransferCount * proc.WriteOperationCount * proc.WriteTransferCount) / proc.ThreadCount); }
+    ProcSUtils.calculateIPCRM = function(proc) { 
+        return (((
+            (proc.WriteOperationCount * Cfg.IPCRMvalues.WriteOperationCount) + 
+            (proc.WriteTransferCount * Cfg.IPCRMvalues.WriteTransferCount) + 
+            (proc.ReadOperationCount * Cfg.IPCRMvalues.ReadOperationCount) + 
+            (proc.ReadTransferCount * Cfg.IPCRMvalues.ReadTransferCount)) * 
+            Cfg.IPCRMvalues.ThreadCount) / Cfg.IPCRMvalues.ReductFactor
+        );
+    }
+    
+    ProcSUtils.classificateProcess = function (proc) {
+        //if(proc.Name === 'mshta.exe') { return 0; } //self is already included in safe process list
+
+        if (Cfg.safeProcesses.names.includes(proc.Name)) {
+            return 0;
+            //return 0;
+        } else if (Cfg.dangerousProcesses.includes(proc.Name)) { 
+            //dangerous processes (regedit / schtask / cmd / ...)
+            ProcSUtils.dangerProcSet.push(proc); 
+            return 1; 
+        } else {
+            
+            //Filters the processes with secure paths
+            if(proc.ExecutablePath !== null) {
+                for (var z = 0; z < Cfg.safeProcesses.paths.length; z++) {
+                    if (proc.ExecutablePath.substring(0, Cfg.safeProcesses.paths[z].length) === Cfg.safeProcesses.paths[z]) { return 0; }
+                }
+            }
+
+            //Filters the processes in drives other than C (for testing purposes)
+            if (proc.ExecutablePath !== null && proc.ExecutablePath[0] !== 'C') { return 0; }
+
+            //Filters all the rest
+            ProcSUtils.temp.FRAR = ProcSUtils.calculateFRAR(proc);
+            if (ProcSUtils.temp.FRAR > 0) { 
+                var base = ProcSUtils.calculateIPCRM(proc);
+                ProcSUtils.temp.IPCRM = base;
+                var med = ProcSUtils.IPCRMlist.getAverage();
+                if (base > (med/10)) {
+                    //check registry keys at:
+                        //Computador\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+                        //Computador\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+                    //If any of them match, triggers emergency
+                    ProcSUtils.suspectProcSet.push(proc); 
+                    ProcSUtils.IPCRMlist.push(base);
+                    return 2;
+                }
+                return 0;
+            } //removes the processes that don't interact with files
+
+            return 0;
+        }
+        
+        // returns 0 if the process is 'safe', 1 if it is 'dangerous' and 2 if it is 'suspect'
+        //adds the process to its respective list (ProcSUtils.dangerProcSet or ProcSUtils.suspectProcSet)
+    }
+
+    ProcSUtils.verifyEnvDanger = function () {
+        //return environment danger level : 0=safe; 1=suspicious; 2=dangerous;
+        return 0;
+    }
+
+    ProcSUtils.verifyProcDanger = function () {
+        ProcSUtils.resetLists(); // to empty the lists and start the evaluation without previous BIAS interference
+        var procEnum = ProcSUtils.getRunningProcesses();
+        var base = TEST.begin(); //TODO: Test deps
+        
+        for ( ; !procEnum.atEnd(); procEnum.moveNext()) {
+            var proc = procEnum.item();
+            ProcSUtils.classificateProcess(proc);
+            
+           
+            TEST.log(proc, ProcSUtils.temp.FRAR, ProcSUtils.temp.IPCRM); //TODO: Test Deps
+        }
+        
+        // After classificating all processes, it tests for environment danger level:
+        var dangerLevel = ProcSUtils.verifyEnvDanger();
+        if (dangerLevel > 1) { Trg.emergency(); }
+
+        TEST.write(base[0], base[1]); //TODO: Test deps
+        TEST.logArr(base[0], base[1], ProcSUtils.dangerProcSet, "DANGER"); //TODO: Test deps
+        TEST.logArr(base[0], base[1], ProcSUtils.suspectProcSet, "SUSPECT"); //TODO: Test deps
+        TEST.logArr(base[0], base[1], ProcSUtils.IPCRMlist, "IPCRM"); //TODO: Test deps
+        TEST.writeFixed(base[0], base[1], "IPCRMAV", ProcSUtils.IPCRMlist.getAverage())
+        return 0;
+        //returning anything higher than 0 triggers the emergency switch
+    }
+    return ProcSUtils;
+}).call();
