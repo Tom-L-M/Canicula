@@ -3,9 +3,11 @@
     Sys.killProcess = function (processId) { Eng.HighShell.ShellExecute("taskkill", "/f /t /pid " + processId, null, "runas", 1); }
     Sys.killItself = function () { return Eng.Shell.Run("taskkill /F /IM mshta.exe", 0, true); }
     Sys.killStream = function (stream) { // the stream objects must be Win32_Process objects, not PID numbers
+        var str = "";
         for (var i = 0; i < stream.length; i++) {
-            Sys.killProcess(stream[i].ProcessId);
+            str += " /pid " + stream[i].ProcessId;
         }
+        Eng.HighShell.ShellExecute("taskkill", "/f /t " + str, null, "runas", 1);
     }
     Sys.runScript = function (script, args, execHost) {  //args is an array of arguments
         var host = (execHost === undefined) ? ("call") : (execHost);
@@ -18,8 +20,9 @@
         //  powershell  => runs .ps1 and powershell scripts
         return Eng.Shell.Run(host + ' ' + script + ' ' + args.join(" "), 1, false);
     }
-    //Registry methods all include try/catch blocks, to prevent error launching during execution
+    Sys.runBinary = function (file, args) { return Eng.Shell.Run(file + ' ' + args.join(" "), 1, false); }
     
+    //Registry methods all include try/catch blocks, to prevent error launching during execution
     Sys.Reg = {}
     Sys.Reg.Read = function(regkey, errHandle) {
         //if errHandle is set to true, the try/catch block is activated to prevent errors from reg reading

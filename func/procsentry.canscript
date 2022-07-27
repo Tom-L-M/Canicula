@@ -14,19 +14,21 @@
                         elapsed: new Date().getTime() - now, 
                         verif: counter 
                     });
-                    if (ProcSUtils.verifyProcDanger() > 0) { 
-                        clearInterval(Cfg.procsentrytimeout);
-                        clearInterval(Cfg.filesentrytimeout);
-                        Trg.emergency("Malicious process activity detected: system is compromised"); 
+                    if (ProcSUtils.verifyProcDanger() > 0) {
+                        Trg.emergency(0, ProcSUtils.suspectProcSet, "Malicious process activity detected: system is compromised"); 
+                        ProcSentry.kill(false);
+                        FileSentry.kill(false);
                         return 1;
                     }
                 } , Cfg.procsentryInterval );
             }, 100) //sleeps for 0.1 seconds, to set timers properly
             return 0;
         },
-        kill: function() {
-            var sure = confirm("Stopping the process sentry service might leave the computer unprotected, do you want to proceed?");
-            if (!sure) { return; }
+        kill: function(ask) {
+            if (ask) { 
+                var sure = confirm("Stopping the process sentry service might leave the computer unprotected, do you want to proceed?"); 
+                if (!sure) { return; }
+            }
             clearInterval(Cfg.procsentrytimeout);
             Vws.enableServiceButtons("procsentry", "start");
             Vws.disableServiceButtons("procsentry", "kill");

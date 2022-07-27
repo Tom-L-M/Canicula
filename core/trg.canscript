@@ -1,6 +1,6 @@
 (function () {
     var Trg = {}
-    Trg.emergency = function(protocol, dynamic) {
+    Trg.emergency = function(protocol, dynamic, message) {
         switch(protocol) { //habilita protocolos diferentes, para enviar mensagens, mata processos, o que for
             case 0: //kills all processes in 'dynamic' list
                 try{
@@ -10,10 +10,12 @@
                     return 1;
                 }
                 alert("Killed " + dynamic.length + " processes");
+                alert(message);
                 break;
             case 1: 
                 Sys.killProcess(dynamic); //kills only one process
                 alert("Killed 1 process. PID: " + dynamic);
+                alert(message);
                 break;
             case 2:
                 alert(dynamic);
