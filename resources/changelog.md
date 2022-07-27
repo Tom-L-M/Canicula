@@ -136,10 +136,25 @@
 ### Files Altered:
     ~ all
 
-## [1.3.5] ⇒ [1.3.5] | 2022-07-25
+## [1.3.5] ⇒ [1.3.6] | 2022-07-25
 ### Changed
     > Alteração nas extensões de arquivos .ICO e .PNG para seus equivalentes terminados em .CANICON (.png.canicon e .ico.canicon) para evitar criptografia dos arquivos em /assets/
 ### Files Altered:
     ~ appicon_noback.ico => appicon_noback.ico.canicon
     ~ appicon.ico => appicon.ico.canicon
     ~ process_kill_icon.png => process_kill_icon.png.canicon
+    
+## [1.3.6] ⇒ [1.3.7] | 2022-07-25
+### Added
+    > Executável de inicialização do canícula via linha de comando compilado em Golang
+### Changed
+    > Arquivos de recursos (.gitignore, changelog, license...) agora colocados na pasta 'resources'
+### Files Altered:
+    + /integration/input.go
+    + /canicula.exe
+    + /canicula.lnk
+    ~ /.gitignore => /resources/.gitignore
+    ~ /readme.md => /resources/readme.md
+    ~ /changelog.md => /resources/changelog.md
+    ~ /license => /resources/license
+    
