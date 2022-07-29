@@ -1,1 +1,0 @@
-Echo(Get-ChildItem -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' | Select-Object Name)
