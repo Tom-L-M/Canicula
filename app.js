@@ -1,17 +1,18 @@
 var Import = function (f) { return eval((new ActiveXObject("Scripting.FileSystemObject")).OpenTextFile(f, 1).ReadAll()); } //This is needed to import other modules
 
 // Modules (path reference is 'app.hta')          // # Dependencies    # Name                 # Description
-// Zero-Level Modules (zero dependencies)
+// Zero-Level Modules
+var Crypto = Import('./libs/crypto.canscript');         // ; []              ; Crypto               ; Namespace for SHA-256 hashing and criptographic resources
+// Core Modules
 var Eng = Import('./core/eng.canscript');               // ; []              ; Engines              ; Includes ActiveX Engine objects (Shell and Fso)
+var Dbs = Import('./core/dbs.canscript')                // ; []              ; Databases            ; Database methods 
 var Cfg = Import('./core/cfg.canscript');               // ; []              ; Configs              ; Configurations file
-var Trg = Import('./core/trg.canscript');               // ; []              ; Trigger              ; Application triggers to kill processes
-//Low-Level Modules (core-only dependencies)
+var Trg = Import('./core/trg.canscript');               // ; [sys]           ; Trigger              ; Application triggers to kill processes
+// Low-Level Modules (core-only dependencies)
 var Vws = Import('./core/vws.canscript');               // ; [cfg]           ; App View             ; App views rendering custom methods
 var Fso = Import('./core/fso.canscript');               // ; [eng]           ; FileSysObject        ; FileSystemObject custom methods
 var Env = Import('./core/env.canscript');               // ; [eng]           ; Environment          ; Environment custom methods
 var Sys = Import('./core/sys.canscript');               // ; [eng]           ; System               ; System custom methods
-//Low-Level library Modules
-var Crypto = Import('./libs/crypto.canscript');         // ; []              ; Crypto               ; Namespace for SHA-256 hashing and criptographic resources
 // Test-Level Modules (experimental)
 var TEST = Import('./test/testlog.canscript'); //TODO: Test deps
 // High-Level Modules (many dependencies)

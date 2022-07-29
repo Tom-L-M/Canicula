@@ -22,7 +22,7 @@
             VERSION="1.0"
         ></HTA:APPLICATION> 
         <title> Canicula - Home Page </title>
-
+        <!-- <meta http-equiv="x-ua-compatible" content="IE=9" /> Adds Suport to JSON BUT REMOVES SUPPORT TO PROCESSES WITH GetObject()-->
         <link rel="stylesheet" href="./public/styles/global.css">
         <link rel="stylesheet" href="./public/styles/index.css">
 
@@ -56,7 +56,7 @@
 
         <!-- TODO: TESTING -->
         <button onclick="Trg.emergency(0, ProcSUtils.suspectProcSet)" language="JavaScript"> Emergency </button>   
-        <button onclick="alert(Sys.Reg.Read('HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\Steam', true))" language="JavaScript"> Reg Read </button>  
+        <button onclick="alert(Sys.Reg.Read('HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\Steam', true))" language="JavaScript"> Reg Read </button>
 
     </body>
 </html>

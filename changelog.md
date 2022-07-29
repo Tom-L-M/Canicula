@@ -3,7 +3,8 @@
 ## [0.1.0] ⇒ [0.1.1] | 2022-06-22
 ### Fixed
     > Caminhos sendo gerados com barras duplicadas
-        Local: \canicula-main\test\testlog.js ⇒ linha 6
+### Files Altered:
+    ~ /test/testlog.js
 
 ## [0.1.1] ⇒ [0.2.0] | 2022-06-26
 ### Changed
@@ -13,11 +14,15 @@
 ### Added 
     > Criação de um sistema de importação dinâmica e modular de scripts
     > Criação de namespaces para separação semântica de código em módulos
-    > Logo do projeot adicionado aos assets
+    > Logo do projeto adicionado aos assets
 ### Deprecated
     > Versões prévias a 0.2.0 perderam compatibilidade com a versão atual (a atualização é obrigatória)
 ### Removed
     > Imagens desnecessárias foram removidas, de forma a melhorar o desempenho do programa
+### Files Altered:
+    ~ /assets/*.*
+    ~ /core/*.*
+    ~ /func/*.*
 
 ## [0.2.0] ⇒ [0.2.1] | 2022-06-27
 ### Fixed
@@ -117,14 +122,16 @@
 ### Security
     > Alteração das extensões de arquivos 'core' do programa de JS para 'canscript', para evitar que sejam encriptados
 ### Files Altered:
-    ~ all
+    ~ /*/
+    ~ /*.*
 
 ## [1.3.4] ⇒ [1.3.5] | 2022-07-22
 ### Fixed
     > Correção de bugs pós teste com ransomware
     > Bug na capacidade de matar processos
 ### Files Altered:
-    ~ all
+    ~ /*/
+    ~ /*.*
 
 ## [1.3.5] ⇒ [1.3.6] | 2022-07-25
 ### Changed
@@ -148,3 +155,35 @@
     ~ /changelog.md => /resources/changelog.md
     ~ /license => /resources/license
     
+## [1.3.7] ⇒ [1.3.8] | 2022-07-28
+### Changed
+    > Ajustes no detector de processos suspeitos
+### Files Altered:
+    ~ /func/procsutils.canscript
+    ~ /core/trg.canscript
+
+## [1.3.8] ⇒ [1.4.0] | 2022-07-28
+### Changed
+    > Ajustes no detector de processos
+    > Alteração no sistema de importações e armazenamento dee configurações do programa
+    > Alteração do tempo de inicialização do programa (recompilação necessária)
+### Added
+    > Sistema de aramzenamento de listas de dados e configurações
+    > Ciração do sistema de 'inline databases'
+### Files Altered:
+    + /core/dbs.canscript
+    + /databases/decoy_locations.candata
+    + /databases/process_blacklist_dangerous.candata
+    + /databases/process_whitelist_names.candata
+    + /databases/whitelist_paths.candata
+    ~ /core/cfg.canscript
+    ~ /core/eng.canscript
+    ~ /core/sys.canscript
+    ~ /core/trg.canscript
+    ~ /core/cfg.canscript
+    ~ /integration/golang/canicula.go
+    ~ /canicula.exe => recompile
+    ~ /func/procsutils.canscript
+    ~ /func/filesutils.canscript
+    ~ /func/procsentry.canscript
+    ~ /func/filesentry.canscript
