@@ -1,7 +1,7 @@
 # canicula
 
 ### CURRENT VERSION :     
-    [ 1.4.1-b ]
+    [ 1.4.1 ]
 
 ### CURRENT BRANCH :
     [ alternate ]
