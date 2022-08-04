@@ -21,6 +21,9 @@ var FileSUtils = Import('./func/filesutils.canscript'); // ; [cfg,eng,env]   ; F
 var ProcSentry = Import('./func/procsentry.canscript'); // ; [cfg,trg,vws]   ; ProcSentry manager 
 var FileSentry = Import('./func/filesentry.canscript'); // ; [cfg,trg,vws]   ; FileSentry manager 
 
+// Top-Level Module (application start/stop controller)
+var App = Import('./core/app.canscript');
+
 //TODO: create a function that verifies the software integrity before starting, getting the hash of all files, and comparing with an hash kept in a file
 //TODO: Create a function that uses the Save() method to create a shortcut to the application on the desktop
 // [https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/k5x59zft(v=vs.84)]

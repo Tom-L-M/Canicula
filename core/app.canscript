@@ -1,0 +1,64 @@
+(function () {
+    var App = {}
+        App.Lock = {}
+            App.Lock.Destination = Cfg.lockFileDestination;
+            App.Lock.FileExtension = ".canlock";
+            App.Lock.FileContent = "0x000000";
+            App.Lock.Verify = function (sname) { 
+                return Eng.Fso.FileExists(App.Lock.Destination + sname + App.Lock.FileExtension); 
+            }
+            App.Lock.Create = function (sname) {
+                var fnm = App.Lock.Destination + sname.trim().toLowerCase() + App.Lock.FileExtension;
+                var tf = Eng.Fso.CreateTextFile(fnm, true);
+                    tf.Write(App.Lock.FileContent);
+                    tf.Close();
+                //Fso.switchFileAttribute(fnm, "hidden", true);
+                return;
+            }
+            App.Lock.Delete = function (sname) {
+                var fnm = App.Lock.Destination + sname.trim().toLowerCase() + App.Lock.FileExtension;
+                var act = Eng.Fso.GetFile(fnm);
+                    act.Delete();
+                return;
+            }
+    
+
+        App.StartService = function (servicename) {
+            var sname = servicename.trim().toLowerCase();
+            if (App.Lock.Verify(sname)) { return; }
+            switch (sname) {
+                case "procsentry": ProcSentry.start(); break;
+                case "filesentry": FileSentry.start(); break;
+                default:;
+            }
+            App.Lock.Create(sname);
+            return;
+        }
+        App.StopService = function (servicename, ask) {
+            var sname = servicename.trim().toLowerCase();
+            if (!App.Lock.Verify(sname)) { return; }
+            switch (sname) {
+                case "procsentry": ProcSentry.kill(ask); break;
+                case "filesentry": FileSentry.kill(ask); break;
+                default:;
+            }
+            App.Lock.Delete(sname);
+            return;
+        }
+        App.StartAllServices = function () {
+            App.StartService("filesentry");
+            App.StartService("procsentry");
+            return;
+        }
+        App.StopAllServices = function () {
+            App.StopService("filesentry", false);
+            App.StopService("procsentry", false);
+            return;
+        }
+        App.Close = function () {
+            App.StopAllServices();
+            Sys.killItself();
+            return;
+        }
+    return App;
+}).call();

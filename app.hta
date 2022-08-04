@@ -6,22 +6,23 @@
             APPLICATIONNAME="canicula"
             NAVIGABLE="yes"
             ICON="./assets/appicon.ico.canicon" 
-            MINIMIZEBUTTON="yes"
-            MAXIMIZEBUTTON="yes" 
-            BORDER="" 
+            MINIMIZEBUTTON="no"
+            MAXIMIZEBUTTON="no" 
+            BORDER="dialog" 
             BORDERSTYLE="normal" 
-            CAPTION="yes" 
+            CAPTION="yes"
+            CONTEXTMENU="no"
             SHOWINTASKBAR="yes" 
-            INNERBORDER=""
-            SCROLL="yes" 
-            SCROLLFLAT="yes"
+            INNERBORDER="no"
+            SCROLL="no" 
+            SCROLLFLAT="no"
             SINGLEINSTANCE="yes"
             SELECTION="no"
-            SYSMENU="yes"
+            SYSMENU="no"
             WINDOWSTATE="normal"
             VERSION="1.0"
         ></HTA:APPLICATION> 
-        <title> Canicula - Home Page </title>
+        <title> Canicula </title>
         <!-- <meta http-equiv="x-ua-compatible" content="IE=9" /> Adds Suport to JSON BUT REMOVES SUPPORT TO PROCESSES WITH GetObject()-->
         <link rel="stylesheet" href="./public/styles/global.css">
         <link rel="stylesheet" href="./public/styles/index.css">
@@ -31,16 +32,21 @@
         <script language="JavaScript" src="./app.js"></script>
         <script language="JavaScript" src="./public/scripts/index.js"></script>
 
+        <div class="header">
+            <div class="topbar">
+                <button class="exit-button" onclick="App.Close();" language="JavaScript"> [ X ] </button> <br /><br />
+            </div>
+        </div>
+
         <div class="container">
-            <!-- <a href="./public/views/processes.hta">Process Manager</a><br/> -->
             <div class="service-starters">
                 <div id="filesentry-start-container">
-                    <button id="filesentry-start" onclick="FileSentry.start();" language="JavaScript">  Start file sentry <img class="icon" src=""/>  </button>   
-                    <button id="filesentry-kill" disabled onclick="FileSentry.kill(true);">  Kill file sentry <img class="icon" src=""/>  </button>     
+                    <button id="filesentry-start" onclick="App.StartService('filesentry');" language="JavaScript">  Start file sentry <img class="icon" src=""/>  </button>   
+                    <button id="filesentry-kill" disabled onclick="App.StopService('filesentry', true);">  Kill file sentry <img class="icon" src=""/>  </button>     
                 </div>
                 <div id="procsentry-start-container">
-                    <button id="procsentry-start" onclick="ProcSentry.start();" language="JavaScript">  Start process sentry <img class="icon" src=""/>  </button>   
-                    <button id="procsentry-kill" disabled onclick="ProcSentry.kill(true);">  Kill process sentry <img class="icon" src=""/>  </button>     
+                    <button id="procsentry-start" onclick="App.StartService('procsentry');" language="JavaScript">  Start process sentry <img class="icon" src=""/>  </button>   
+                    <button id="procsentry-kill" disabled onclick="App.StopService('procsentry', true);">  Kill process sentry <img class="icon" src=""/>  </button>     
                 </div>
             </div>              
             <div class="service-status"> 
@@ -50,6 +56,8 @@
                 <p id="procsentry-status-label"> Process Sentry: </p>
                 <div id="procsentry-status"></div> 
             </div>
+
+            <br/><span>Configs:</span><br/>
             <code id="config-status"></code>
         </div>
 

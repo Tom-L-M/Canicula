@@ -1,6 +1,7 @@
 (function () {
     var Cfg = {}
         Cfg.mainAppPasswordPath = "./env/main.auth.cansec";
+        Cfg.lockFileDestination = "./lock/";
         Cfg.filesentrytimeout = 0;
         Cfg.procsentrytimeout = 0;
         Cfg.procsentryInterval = 1000;

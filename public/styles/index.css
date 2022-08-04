@@ -1,0 +1,13 @@
+.container {
+    height:90%; 
+    overflow:auto; 
+    width:100%;
+}
+.header {
+    width:100%;
+}
+.exit-button {
+    position:relative;
+    background-color: red;
+    color: white;
+}

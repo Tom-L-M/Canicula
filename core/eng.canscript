@@ -32,6 +32,9 @@
             if (a === 0) { return 0; }
             return (Number(this.sumUp()) / a);
         }
+
+        // Adds support to a 'trim' string method, by splitting the string on ' ', and then joining it without the spaces 
+        String.prototype.trim = function() { return this.split(" ").join(""); }
     }
 
     Eng.StartAppEngines(); //starts engines automatically (explicit starting is not necessary anymore)

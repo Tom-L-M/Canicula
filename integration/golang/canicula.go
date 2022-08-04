@@ -15,7 +15,7 @@ import (
 func main() {
 	// if not elevated, relaunch by shellexecute with runas verb set
 	if !AdminLevel() { ElevatePrivilege() }
-	time.Sleep(1*time.Second)
+	time.Sleep(time.Second)
 
 	// run custom code
 	RunElevatedCode();
@@ -29,7 +29,7 @@ func RunElevatedCode() {
 	fmt.Println("(Tip: type 'help')")
 
 	for {
-		fmt.Print("\n $> ")
+		fmt.Print("\n$> ")
 		text, _ := reader.ReadString('\n')
 		// convert CRLF to LF
 		//text = strings.Replace(text, "\n", "", -1) //If in UNIX
