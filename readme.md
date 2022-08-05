@@ -1,10 +1,10 @@
 # canicula
 
 ### CURRENT VERSION :     
-    [ 1.4.1 ]
+    [ 1.5.0 ]
 
 ### CURRENT BRANCH :
-    [ alternate ]
+    [ main ]
 
 ### CURRENT BUILD STATES : 
-    [ Unstable | Dev | Testing ]
+    [ Stable | Dev | Testing ]
