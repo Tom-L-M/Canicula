@@ -28,6 +28,10 @@
         //  powershell  => runs .ps1 and powershell scripts
         return Eng.Shell.Run(host + ' ' + script + ' ' + args.join(" "), 1, false);
     }
+    Sys.runCommand = function (command, args, execHost, verb) { //verb is the option set, specially for powershell, like:  "-WindowStyle hidden"
+        var host = (execHost === undefined) ? ("call") : (execHost);
+        return Eng.Shell.Run([host, verb, command, args.join(" ")].join(" "), 1, false);
+    }
     Sys.runBinary = function (file, args) { return Eng.Shell.Run(file + ' ' + args.join(" "), 1, false); }
     
     //Registry methods all include try/catch blocks, to prevent error launching during execution

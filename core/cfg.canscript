@@ -1,5 +1,11 @@
 (function () {
     var Cfg = {}
+        Cfg.AppVersion = "1.4.1";
+        Cfg.Server = "https://CANICULA-BACKEND.tluchesi.repl.co";
+        Cfg.ServerUpdatePath = "/update/latest";
+        Cfg.LocalUpdatePath = "./update/"
+        Cfg.LocalUpdateExtractionPath = "./update/";
+
         Cfg.mainAppPasswordPath = "./env/main.auth.cansec";
         Cfg.lockFileDestination = "./lock/";
         Cfg.filesentrytimeout = 0;

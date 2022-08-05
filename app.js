@@ -11,6 +11,7 @@ var Trg = Import('./core/trg.canscript');               // ; [sys]           ; T
 // Low-Level Modules (core-only dependencies)
 var Vws = Import('./core/vws.canscript');               // ; [cfg]           ; App View             ; App views rendering custom methods
 var Fso = Import('./core/fso.canscript');               // ; [eng]           ; FileSysObject        ; FileSystemObject custom methods
+var Htt = Import('./core/htt.canscript');
 var Env = Import('./core/env.canscript');               // ; [eng]           ; Environment          ; Environment custom methods
 var Sys = Import('./core/sys.canscript');               // ; [eng]           ; System               ; System custom methods
 // Test-Level Modules (experimental)
@@ -21,7 +22,7 @@ var FileSUtils = Import('./func/filesutils.canscript'); // ; [cfg,eng,env]   ; F
 var ProcSentry = Import('./func/procsentry.canscript'); // ; [cfg,trg,vws]   ; ProcSentry manager 
 var FileSentry = Import('./func/filesentry.canscript'); // ; [cfg,trg,vws]   ; FileSentry manager 
 
-// Top-Level Module (application start/stop controller)
+// Top-Level Modules
 var App = Import('./core/app.canscript');
 
 //TODO: create a function that verifies the software integrity before starting, getting the hash of all files, and comparing with an hash kept in a file

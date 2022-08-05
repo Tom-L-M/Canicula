@@ -3,8 +3,12 @@
     Vws.ResizeWindow = function(width, height) { window.resizeTo(width, height); }
     Vws.MoveWindow = function(x, y) { window.moveTo(x, y); }
     Vws.CenterWindow = function(resize) { 
-        if (resize) { Vws.ResizeWindow(screen.availWidth/4, screen.availHeight/2); }
-        Vws.MoveWindow(screen.availWidth/2.75, screen.availHeight/3.5);
+        if (resize) { 
+            Vws.ResizeWindow(500,600);
+            //Vws.ResizeWindow(screen.availWidth/4, screen.availHeight/2); 
+        }
+        Vws.MoveWindow(400, 200);
+        //Vws.MoveWindow(screen.availWidth/2.75, screen.availHeight/3.5);
     }
 
     Vws.loadStatusFrame = function (service, content) {
