@@ -1,0 +1,22 @@
+body {
+    background-color: whitesmoke;
+}
+.icon {
+    border: none;
+}
+.icon:hover {
+    color:red; /* Actually does nothing, just to not make this ruleset empty */
+}
+.container {
+    height:90%; 
+    overflow:auto; 
+    width:100%;
+}
+.header {
+    width:100%;
+}
+.exit-button {
+    position:relative;
+    background-color: red;
+    color: white;
+}

@@ -1,0 +1,161 @@
+(function () {
+    var App = {}
+        App.Lock = {}
+            App.Lock.Destination = Cfg.lockFileDestination;
+            App.Lock.FileExtension = ".canlock";
+            App.Lock.FileContent = "0x000001";
+            App.Lock.Verify = function (sname) { 
+                return Eng.Fso.FileExists(App.Lock.Destination + sname + App.Lock.FileExtension); 
+            }
+            App.Lock.Create = function (sname) {
+                var fnm = App.Lock.Destination + sname.trim().toLowerCase() + App.Lock.FileExtension;
+                var tf = Eng.Fso.CreateTextFile(fnm, true);
+                    tf.Write(App.Lock.FileContent);
+                    tf.Close();
+                //Fso.switchFileAttribute(fnm, "hidden", true);
+                return;
+            }
+            App.Lock.Delete = function (sname) {
+                var fnm = App.Lock.Destination + sname.trim().toLowerCase() + App.Lock.FileExtension;
+                var act = Eng.Fso.GetFile(fnm);
+                    act.Delete();
+                return;
+            }
+    
+
+        App.StartService = function (servicename) {
+            var sname = servicename.trim().toLowerCase();
+            if (App.Lock.Verify(sname)) { return; }
+            switch (sname) {
+                case "procsentry": ProcSentry.start(); break;
+                case "filesentry": FileSentry.start(); break;
+                default:;
+            }
+            App.Lock.Create(sname);
+            return;
+        }
+        App.StopService = function (servicename, ask) {
+            var sname = servicename.trim().toLowerCase();
+            if (!App.Lock.Verify(sname)) { return; }
+            switch (sname) {
+                case "procsentry": ProcSentry.kill(ask); break;
+                case "filesentry": FileSentry.kill(ask); break;
+                default:;
+            }
+            App.Lock.Delete(sname);
+            return;
+        }
+        App.StartAllServices = function () {
+            App.StartService("filesentry");
+            App.StartService("procsentry");
+            // service button enabling happens in /filesentry.canscript because of a bug: if the service is stopped before filesentry initialization, it breaks;
+            return;
+        }
+        App.StopAllServices = function () {
+            App.StopService("filesentry", false);
+            App.StopService("procsentry", false);
+            Vws.enableServiceButtons("start");
+            Vws.disableServiceButtons("stop");
+            return;
+        }
+        App.Close = function () {
+            App.StopAllServices();
+            Sys.killItself();
+            return;
+        }
+
+        App.Version = {}
+            App.Version.Local = Cfg.AppVersion;
+            App.Version.Remote;
+            App.Version.DownloadFile;
+            App.Version.Check = function () { return Htt.GetWebData(Cfg.Server, false); }
+            App.Version.ClearLocalUpdate = function () { Sys.runCommand('Get-ChildItem', [ Cfg.LocalUpdatePath, "-Recurse | ForEach { Remove-Item $_.FullName -Force -Recurse }" ], 'powershell', "-WindowStyle hidden"); return; }
+            App.Version.DownloadUpdate = function () { return Htt.GetWebData(Cfg.Server + Cfg.ServerUpdatePath, true, App.Version.DownloadFile); }
+            App.Version.ExtractUpdate = function (file, location) { Sys.runCommand('Expand-Archive', [ file, location ], "powershell", "-WindowStyle hidden"); return; } // extract zipped file in 'update'     
+            App.Version.InstallUpdate = function (updateversion) {
+                Sys.runCommand("Rename-Item", ["./", "./___TEMP___"], "powershell", "-NoExit");
+                Sys.runCommand('Copy-Item', ["-Path", "../", "-Destination", "../..", "-Recurse", "-Force", "-Passthru"], "powershell", "-NoExit");
+                Sys.runCommand('Get-ChildItem', [ "./___TEMP___", "-Recurse | ForEach { Remove-Item $_.FullName -Force -Recurse }" ], 'powershell', "-WindowStyle hidden");
+            } // turn extracted file into the new app
+
+            App.Version.Update = function () {
+
+                App.Version.Check(); // Pinging server to awake it (case it is inactive)
+
+                try { App.Version.ClearLocalUpdate(); } 
+                catch (err) { alert("ERROR: Impossible to clear local update cache. ABORTED."); return 1; }
+                alert("Cleared Local Update Cache"); //TODO
+                
+                try { 
+                    App.Version.Remote = App.Version.Check(); 
+                    App.Version.DownloadFile = Cfg.LocalUpdatePath + "canicula-main-" + App.Version.Remote + ".zip"
+                } catch (err) { alert("ERROR: Impossible to connect to remote server. ABORTED."); return 1; }
+                alert("Connected to Remote Server"); //TODO
+
+                try {
+                    if (App.Version.Local != App.Version.Remote) { App.Version.DownloadUpdate(); }
+                } catch (err) { alert("ERROR: Impossible to fetch updates from remote server. ABORTED."); return 1; }
+                alert("Downloaded Updates From Remote Server"); //TODO
+
+                try { App.Version.ExtractUpdate(App.Version.DownloadFile, Cfg.LocalUpdateExtractionPath); }
+                catch (err) { alert("ERROR: Impossible to extract files downloaded from remote server. ABORTED."); return 1; }
+                alert("Extracted Downloaded Files Sucessfully"); //TODO
+                
+                try { App.Version.InstallUpdate(App.Version.Remote); } 
+                catch (err) { alert("ERROR: Impossible to install update. ABORTED."); return 1; }
+                alert("Update installed sucessfully");
+                return 0;
+            }
+        
+        //App Miscellaneous :
+            App.VerifyFirstRun = function () {
+                // Checks if the file 'fRun.canlock' exists, if it does, it means thats the first time the app is run, and the shortcut will be created
+                var HERE = Env.mountPath(Fso.formatPath("%ROOTDIR%"));
+                var fRun = HERE + "\\lock\\fRun.canlock"; //first-run file lock => only exists if it is the first time running the app
+                return Fso.verifyExistance(fRun);
+                //returns 'true' for First Run and 'false' for Not First Run
+            }
+            App.SaveShortcutOnDesktop = function () {
+                // Create shortcut on desktop
+                var HERE = Env.mountPath(Fso.formatPath("%ROOTDIR%"));
+                var desktop = Eng.Shell.SpecialFolders("Desktop");
+                var oShellLink = Eng.Shell.CreateShortcut(desktop + "\\Canicula.lnk");
+                oShellLink.Description = "Execute Canicula Anti-Ransomware Protection";
+                oShellLink.TargetPath = HERE + "\\canicula.exe";
+                oShellLink.WindowStyle = 1;
+                oShellLink.IconLocation = HERE + "\\assets\\appicon_desktop.ico.canicon, 0";
+                oShellLink.WorkingDirectory = Env.getWorkingDir();
+                oShellLink.Save();
+                return;
+            }
+            App.RemoveFirstRunMarker = function () {
+                var HERE = Env.mountPath(Fso.formatPath("%ROOTDIR%"));
+                Eng.Fso.DeleteFile(HERE + "\\lock\\fRun.canlock"); // remove firstRun lock
+                return;
+            }
+
+    App.RunOnStart = function () {
+        if (App.VerifyFirstRun()) { 
+            App.SaveShortcutOnDesktop();
+            App.RemoveFirstRunMarker();
+        }
+        
+        Vws.disableServiceButtons("stop");
+        Vws.CenterWindow(true);
+        Vws.loadConfigFrame();
+        Vws.displayServiceStatus({ //display service as not running when opens the page
+            service: "filesentry",
+            status: "Stopped",
+            elapsed: 0, 
+            verif: 0
+        });
+        Vws.displayServiceStatus({ //display service as not running when opens the page
+            service: "procsentry",
+            status: "Stopped",
+            elapsed: 0, 
+            verif: 0
+        });
+    }
+
+    return App;
+}).call();

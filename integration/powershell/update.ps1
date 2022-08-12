@@ -1,0 +1,1 @@
+Start-Process "canicula.exe" -Verb RunAs "-ExecutionPolicy Bypass"; exit;
