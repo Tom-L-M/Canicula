@@ -1,0 +1,17 @@
+(function () {
+    var KNNutils = {}
+    KNNutils.ml_models_data;
+    KNNutils.ml_models_labels;
+    KNNutils.AI;
+    KNNutils.LoadPreset = function (data, labels) {
+        KNNutils.ml_models_data = Dbs.ReadData(data);
+        KNNutils.ml_models_labels = Dbs.ReadData(labels);
+        KNNutils.AI = new KNN.Predictor(Cfg.KNNconfig.k, KNNutils.ml_models_data, KNNutils.ml_models_labels);
+    }
+    KNNutils.PredictPoint = function (point) { //point is an arrays, matching the models in the traingin sets
+        return KNNutils.AI.Predict(point);
+    }
+    KNNutils.LoadPreset('./database/ml_models_data.candata', './database/ml_models_labels.candata');
+    // preset loading happens here instead of in procsutils to reduce execution time
+    return KNNutils;
+}).call();

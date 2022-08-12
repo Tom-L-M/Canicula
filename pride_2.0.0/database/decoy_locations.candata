@@ -1,0 +1,11 @@
+// Decoy locations
+
+//"C:\\Users\\%USERPROFILE%\\Documents",
+//"C:\\Users\\%USERPROFILE%\\Desktop",
+//"C:\\Users\\%USERPROFILE%\\Pictures",
+//"C:\\Users\\%USERPROFILE%\\Music",
+//"C:\\Users\\%USERPROFILE%\\Downloads",
+//"C:\\Users\\%USERPROFILE%\\Videos",
+//"C:\\Users\\%USERPROFILE%\\AppData\\Local",
+//"C:\\Users\\%USERPROFILE%",
+"%ROOTDIR%"
