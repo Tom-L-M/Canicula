@@ -1,0 +1,32 @@
+(function() {
+    Import = function (f) { return eval((new ActiveXObject("Scripting.FileSystemObject")).OpenTextFile(f, 1).ReadAll()); } //This is needed to import other modules
+    // Modules (path reference is 'app.hta')          // # Dependencies    # Name                 # Description
+    // Zero-Level Modules
+    Polyfill = Import('./core/polyfill.canscript');
+    // Core Modules
+    Eng = Import('./core/eng.canscript');               // ; []              ; Engines              ; Includes ActiveX Engine objects (Shell and Fso)
+    Dbs = Import('./core/dbs.canscript');               // ; []              ; Databases            ; Database methods 
+    Cfg = Import('./core/cfg.canscript');               // ; []              ; Configs              ; Configurations file
+    Trg = Import('./core/trg.canscript');               // ; [sys]           ; Trigger              ; Application triggers to kill processes
+    // Low-Level Modules (core-only dependencies)
+    Vws = Import('./core/vws.canscript');               // ; [cfg]           ; App View             ; App views rendering custom methods
+    Fso = Import('./core/fso.canscript');               // ; [eng]           ; FileSysObject        ; FileSystemObject custom methods
+    Htt = Import('./core/htt.canscript');
+    Env = Import('./core/env.canscript');               // ; [eng]           ; Environment          ; Environment custom methods
+    Sys = Import('./core/sys.canscript');               // ; [eng]           ; System               ; System custom methods
+    KNN = Import('./core/knn.canscript');
+    // Test-Level Modules (experimental)
+    TEST = Import('./test/testlog.canscript'); //TODO: Test deps
+    // High-Level Modules (many dependencies)
+    KNNutils   = Import('./func/knnutils.canscript');
+    ProcSUtils = Import('./func/procsutils.canscript'); // ; [cfg,eng]       ; ProcSentry utils
+    FileSUtils = Import('./func/filesutils.canscript'); // ; [cfg,eng,env]   ; FileSentry utils 
+    ProcSentry = Import('./func/procsentry.canscript'); // ; [cfg,trg,vws]   ; ProcSentry manager 
+    FileSentry = Import('./func/filesentry.canscript'); // ; [cfg,trg,vws]   ; FileSentry manager 
+    // Low-Priority Modules
+    Crypto = Import('./libs/crypto.canscript'); 
+    // Top-Level Modules
+    App = Import('./core/app.canscript');
+
+    return App.RunOnStart; //Exposes the main app entry point to the HTA file
+})()

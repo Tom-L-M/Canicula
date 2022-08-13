@@ -162,7 +162,7 @@
     ~ /func/procsutils.canscript
     ~ /core/trg.canscript
 
-## [1.3.8] ⇒ [1.4.0] | 2022-07-28
+## [1.3.8] ⇒ [1.4.1] | 2022-07-28
 ### Changed
     > Ajustes no detector de processos
     > Alteração no sistema de importações e armazenamento dee configurações do programa
@@ -187,3 +187,21 @@
     ~ /func/filesutils.canscript
     ~ /func/procsentry.canscript
     ~ /func/filesentry.canscript
+
+## [1.4.1] ⇒ [1.5.0] | 2022-07-28
+### Changed
+    > Ajustes no detector de processos
+### Added
+    > Sistema de verificação de execução do programa com lockfiles
+### Files Altered:
+    ~ /lock/*.*
+    ~ /core/*.*
+
+## [1.5.0] ⇒ [2.0.0] | 2022-07-28
+### Added
+    > Machine Learning (Algoritmo KNN) para ajduar na detecção dos processos
+    > Criação de atalho na área de trabalho na primeira execução do programa
+    > Sistema de updates (instável ainda)
+    > C&C server para controle remoto (instável ainda)
+### Files Altered:
+    ~ *

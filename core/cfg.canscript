@@ -1,6 +1,6 @@
 (function () {
     var Cfg = {}
-        Cfg.AppVersion = "1.6.0";
+        Cfg.AppVersion = "1.4.1";
         Cfg.Server = "https://CANICULA-BACKEND.tluchesi.repl.co";
         Cfg.ServerUpdatePath = "/update/latest";
         Cfg.LocalUpdatePath = "./update/"
