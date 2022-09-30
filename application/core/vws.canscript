@@ -1,0 +1,85 @@
+(function () {
+    var Vws = {}
+    Vws.ResizeWindow = function(width, height) { window.resizeTo(width, height); }
+    Vws.MoveWindow = function(x, y) { window.moveTo(x, y); }
+    Vws.CenterWindow = function(resize) { if (resize) { Vws.ResizeWindow(500,600); } Vws.MoveWindow(720, 220); return; }
+    Vws.ReduceWindow = function() { Vws.LoadTab("status"); Vws.ResizeWindow(20,90); return; }
+
+    Vws.getStatusTabContext = function () { return document.getElementById("status-service-wrapper") !== null } //verifica se a tab selecionada é a 'status'
+    Vws.ServiceAreaActive = function (start) { //true => 'running' | false => 'stopped'
+        if (Vws.getStatusTabContext()) { 
+
+            var STATE = ''
+                + '<div>'
+                    + '<button id="status-service-button" onclick="App.StopService();" language="JavaScript"> <img src=".\\public\\assets\\icons_32_64px\\pause.canpng"> </button>' 
+                    + '<div id="status-service-state-wrapper">'
+                        + '<p id="status-service-label"> &nbsp; &nbsp; &nbsp; Status: <span id="status-service-state">Active</span> </p>'
+                        + '<div id="status-img-wrapper"> <img src=".\\public\\assets\\icons_32_64px\\running.cangif"> </div>'
+                    + '</div>'
+                + '</div>';
+
+            if (!start) {
+                STATE = ''
+                + '<div>'
+                    + '<button id="status-service-button" onclick="App.StartService();" language="JavaScript"> <img src=".\\public\\assets\\icons_32_64px\\play.canpng"> </button>' 
+                    + '<div id="status-service-state-wrapper">'
+                        + '<p id="status-service-label"> &nbsp; &nbsp; &nbsp; Status: <span id="status-service-state">Paused</span> </p>'
+                        + '<div id="status-img-wrapper"> <img src=".\\public\\assets\\icons_32_64px\\stopped.canpng"> </div>' 
+                    + '</div>'
+                + '</div>';
+            }
+
+            document.getElementById("status-service-wrapper").innerHTML = STATE;
+        }
+        return 0;
+    }
+    Vws.LoadingScreen = function (st) { //true => turn on loading | false => turn off loading
+        var STATE = '<div style="position:absolute;width:100%;height:100%;top:10%;left:0;background-color:#272727;"> <img src=".\\public\\assets\\icons_32_64px\\loading.cangif" style="position:relative;top:38%;left:43%;"> </div> ';
+        if (!st) { STATE = ''; }
+        document.getElementById("loading-placeholder").innerHTML = STATE;
+        return 0;
+    }
+    Vws.LoadTab = function(tabname) { // TABS : 'log', 'dump', 'settings', 'status', 'backup'
+        var fragment = Dbs.ReadRawData(".\\public\\views\\" + tabname.toLowerCase().trim() + ".canhta");
+        document.getElementById("wrapper").innerHTML = fragment;
+        return 0;
+    }
+    Vws.ShowHelp = function () {
+        if (!confirm("Open the help page on browser?")) { return 0; }
+        return Eng.Shell.Exec('explorer ' + Cfg.helpContent);
+    }
+    Vws.ShowInfo = function () {
+        var backupStorage = Number(Fso.GetStorageUsage("." + Cfg.BackupFolder)/1000000 + 0.01).toString(); //only the backup size
+        var appStorage = (Number(Fso.GetStorageUsage(Env.WorkingDir)/1000000) - backupStorage).toString(); //only the application size
+        var installpath = Env.WorkingDir.substring(0, Env.WorkingDir.lastIndexOf("\\"));
+            installpath = installpath.substring(0, Env.WorkingDir.lastIndexOf("\\"));
+            installpath = installpath.substring(0, Env.WorkingDir.lastIndexOf("\\"));
+        var content = [
+            "Application:",
+            "  Version: " + Cfg.AppVersion,
+            "  Branch: (main)",
+            "  Status: Stable",
+            "  Release Date: 12/09/2022",
+            "",
+            "Team: ",
+            "  Tomas Luchesi (Project Manager & Developer) ",
+            "  Bruno dos Santos (Q.A. & Tester)",
+            "  Gabriel Carqueijeiro (Tester & Designer)",
+            "  Lucas Kenji (Tester & Designer)",
+            "  Wellington Almeida (Security Analyst)",
+            "",
+            "Environment:",
+            "  Active User: " + Env.User,
+            "  Install Path: " + Env.WorkingDir.substring(0, Env.WorkingDir.lastIndexOf("\\")).substring(0, Env.WorkingDir.lastIndexOf("\\")).substring(0, Env.WorkingDir.lastIndexOf("\\")),
+            "  App Storage Use: " + appStorage.substring(0,appStorage.indexOf(".") + 3) + "Mb",
+            "  Backup Path: $AppInstallPath" + Cfg.BackupFolder,
+            "  Backup Storage Size: " + backupStorage.substring(0,appStorage.indexOf(".") + 3) + "Mb" 
+        ].join("\n")
+        Eng.Shell.Popup(content,0,"Canicula",4096);        
+        //Eng.Shell.Popup(content,0,"Canicula",64);
+        //confirm(content);
+    }
+    Vws.OpenGithub = function () { return Eng.Shell.Exec('explorer "https://github.com/Tom-L-M/canicula'); }
+
+    return Vws;
+}).call();

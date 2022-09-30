@@ -1,0 +1,29 @@
+(function () {
+    var Dbs = {}
+    Dbs.ReadData = function (dbpath) {
+        var file = Eng.Fso.OpenTextFile(dbpath, 1);
+        var data = file.ReadAll();
+            data = eval("[\n" + data + "\n]");
+        file.Close();
+        return data;
+    }
+    Dbs.WriteData = function(dbpath, data) {
+        var towrite = JSON.stringify(data);
+            towrite = towrite.substring(1,towrite.length-1);
+        var file = Eng.Fso.OpenTextFile(dbpath, 2);
+        file.Write(towrite);
+        file.Close();
+    }
+    Dbs.WriteRawData = function (dbpath, data) {
+        var file = Eng.Fso.OpenTextFile(dbpath, 2);
+        file.Write(data.toString());
+        file.Close();
+    }
+    Dbs.ReadRawData = function (dbpath) {
+        var file = Eng.Fso.OpenTextFile(dbpath, 1);
+        var data = file.ReadAll();
+        file.Close();
+        return data;
+    }
+    return Dbs;
+}).call();

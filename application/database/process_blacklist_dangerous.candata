@@ -1,0 +1,17 @@
+// Processes categorized as 'dangerous' and that can be used by ransomwares
+
+//"Registry", 
+"cmd.exe", 
+"taskkill.exe",
+"sc.exe", 
+"fsutil.exe", 
+"wbadmin.exe", 
+"bcdedit.exe", 
+"schtasks.exe", 
+//"regedit.exe",
+"msdtc.exe",
+"vssadmin.exe",
+"powershell.exe",
+"wmic.exe",
+"forfiles.exe",
+"icacls.exe"

@@ -1,0 +1,45 @@
+#status-service-button {
+    position: absolute;
+    top: 100px;
+    left: 140px;
+    height: 70px;
+    width: 190px;
+    background-color: #c33e37;
+    border: none;
+}
+
+#status-service-button:hover {
+    cursor: pointer;
+    background-color: #bd6f6a;
+}
+
+#status-service-state-wrapper {
+    position: absolute;
+    top: 250px;
+    left: 140px;
+    height: 140px;
+    width: 190px;
+    background-color: #333333;
+}
+
+#status-service-label {
+    margin-top:20px;
+    margin-left:20px;
+    color:#c33e37;
+}
+
+#status-service-state {
+    color:#c33e37;
+}
+
+#status-img-wrapper {
+    margin-left:60px;
+    color:#c33e37;
+}
+
+/* #status-main-title {
+    margin-top:13%;
+    margin-left:35%;
+    color:#c33e37;
+    font-size: large;
+} */

@@ -1,0 +1,103 @@
+(function () {
+    var ProcSUtils = {}, UserLog = '';
+    ProcSUtils.dangerProcSet = []; // list with the dangerous system processes running
+    ProcSUtils.suspectProcSet = []; // list of suspect process running
+    ProcSUtils.resetLists = function() { ProcSUtils.dangerProcSet = []; ProcSUtils.suspectProcSet = []; return; }
+
+    ProcSUtils.classificateProcess = function (proc) {
+        if (Cfg.safeProcesses.names.includes(proc.Name)) {
+            return 0;
+        } else if (Cfg.dangerousProcesses.includes(proc.Name)) { //dangerous processes (regedit / schtask / cmd / ...)
+            ProcSUtils.dangerProcSet.push(proc.Name); 
+            return 0; 
+        } else {
+            //Filters the processes with secure paths
+            if(proc.ExecutablePath !== null) {
+                for (var z = 0; z < Cfg.safeProcesses.paths.length; z++) {
+                    if (proc.ExecutablePath.substring(0, Cfg.safeProcesses.paths[z].length) === Cfg.safeProcesses.paths[z]) {
+                        return 0; 
+                    }
+                }
+            }
+
+            //Filters the processes in drives other than C (for testing purposes)
+            //if (proc.ExecutablePath !== null && proc.ExecutablePath[0] !== 'C') { return 0; }
+
+            var est = KNNutils.PredictPoint([proc.Priority,
+                proc.ThreadCount, proc.ReadOperationCount, 
+                proc.ReadTransferCount, proc.WriteOperationCount, 
+                proc.WriteTransferCount, proc.OtherOperationCount, 
+                proc.OtherTransferCount, proc.VirtualSize,
+                proc.PeakVirtualSize, proc.WorkingSetSize, 
+                proc.PeakWorkingSetSize
+            ]);
+
+            if (est == "Unsafe") { 
+                Sys.killProcess(proc.ProcessId); //kills on demand only, and doesen't triggers the Trg.emergency, as the 'suspect' list may be too big
+                // KILL FIRST, LOG LATER
+
+                var d_t = new Date();
+                var d_t_o = {
+                    y: d_t.getFullYear(),
+                    m: ("0" + (d_t.getMonth() + 1)).slice(-2),
+                    d: ("0" + d_t.getDate()).slice(-2),
+                    hou: d_t.getHours(),
+                    min: d_t.getMinutes(),
+                    sec: d_t.getSeconds(),
+                    mil: d_t.getMilliseconds()
+                }
+                var rs = d_t_o.d + "/" + d_t_o.m + " " + d_t_o.hou + ":" + d_t_o.min + ":" + d_t_o.sec;
+
+                var subset = proc.Priority +',' // Almost all of them have priority 8
+                    + proc.ThreadCount +','
+                    + proc.ReadOperationCount +','
+                    + proc.ReadTransferCount +','
+                    + proc.WriteOperationCount +','
+                    + proc.WriteTransferCount + ','
+                    + proc.OtherOperationCount +','
+                    + proc.OtherTransferCount +','
+                    + proc.VirtualSize +','
+                    + proc.PeakVirtualSize +','
+                    + proc.WorkingSetSize +','
+                    + proc.PeakWorkingSetSize;
+
+                Log.AppendAccumulated('.\\log\\log_vws.candata', '\n['+ rs +'] ' + proc.ProcessId + ' ' + proc.Name); // user logs
+                Log.AppendAccumulated('.\\log\\log_report.candata', 
+                    '\n' +  d_t_o.d + "/" + d_t_o.m + "/" + d_t_o.y + "$C" + d_t_o.hou + ":" + d_t_o.min + ":" + d_t_o.sec + '$C'+ 
+                    proc.Name  +'$C'+ proc.ProcessId +'$C'+ proc.ParentProcessId +'$C'+ proc.Status +'$C'+ proc.Priority +'$C'+ proc.ThreadCount +'$C'+ proc.ExecutablePath +'$C'+ proc.CommandLine
+                ); //report logs => this is an unreadable log file on purpose
+                Log.AppendAccumulated('.\\log\\log_siem.candata',
+                    '\n' + Env.NetAddress.IP + " - " + d_t_o.y + "-" + d_t_o.m + "-" + d_t_o.d + "T" + d_t_o.hou + ":" + d_t_o.min + ":" + d_t_o.sec + "." + d_t_o.mil + ' INFO : SUSPECT PROCESS KILLED '+ 
+                    proc.Name + ' | '+ proc.ProcessId +' | '+ proc.ParentProcessId +' | '+ proc.Status +' | '+ proc.Priority +' | '+ proc.ThreadCount +' | '+ proc.ExecutablePath +' | '+ proc.CommandLine
+                );
+
+                ProcSUtils.suspectProcSet.push(proc); 
+                alert("[" + rs + "] : Killed probable malicious process: " + proc.Name);
+                return 0;
+            }
+            ProcSUtils.suspectProcSet.push(proc);
+        }
+        return 0;
+    }
+
+    ProcSUtils.verifyEnvDanger = function () {
+        if (ProcSUtils.dangerProcSet.length > 10) {
+            for (var i = 0; i < Cfg.dangerousProcesses.length; i++) {
+                try {
+                    Sys.killProcessIM(Cfg.dangerousProcesses[i]);
+                } catch (err) {} // silent permission err handling
+            }
+        }
+        return 0;
+    }
+
+    ProcSUtils.verifyProcDanger = function () {
+        ProcSUtils.resetLists(); // to empty the lists and start the evaluation without previous BIAS interference
+        var procEnum = Sys.getRunningProcesses();
+        for ( ; !procEnum.atEnd(); procEnum.moveNext()) { ProcSUtils.classificateProcess(procEnum.item()); }
+        // After classificating all processes, it tests for environment danger level:
+        ProcSUtils.verifyEnvDanger();
+        return 0
+    }
+    return ProcSUtils;
+}).call();

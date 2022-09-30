@@ -1,0 +1,94 @@
+(function () {
+    var App = {}
+        App.Lock = {}
+            App.Lock.Verify = function () { return Eng.Fso.FileExists("." + Cfg.lockFileDestination + "service" + Cfg.lockFileExtension); }
+            App.Lock.Create = function () {
+                var fnm = "." + Cfg.lockFileDestination + "service" + Cfg.lockFileExtension;
+                var tf = Eng.Fso.CreateTextFile(fnm, true);
+                    tf.Write(Cfg.lockFileContent);
+                    tf.Close();
+                //Fso.switchFileAttribute(fnm, "hidden", true);
+                return;
+            }
+            App.Lock.Delete = function () {
+                var fnm = "." + Cfg.lockFileDestination + "service" + Cfg.lockFileExtension;
+                var act = Eng.Fso.GetFile(fnm);
+                act.Delete();
+                return;
+            }
+        
+        App.StartService = function () {
+            if (App.Lock.Verify()) { return; }
+            Service.start();
+            App.Lock.Create();
+            return;
+        }
+        App.StopService = function () {
+            if (!App.Lock.Verify()) { return; }
+            Service.kill();
+            App.Lock.Delete();
+            return;
+        }
+        App.Close = function () {
+            if (!confirm("Close the application?")) { return; }
+            App.StopService();
+            Fso.ClearFolder(".\\tmp");
+            Sys.killItself();
+            return;
+        }
+        
+        //App Miscellaneous :
+            App.VerifyFirstRun = function () {
+                // Checks if the file 'fRun.canlock' exists, if it does, it means thats the first time the app is run, and the shortcut will be created
+                var HERE = Env.mountPath(Fso.formatPath("%ROOTDIR%"));
+                var fRun = HERE + "\\lock\\fRun.canlock"; //first-run file lock => only exists if it is the first time running the app
+                return Fso.verifyExistance(fRun);
+                //returns 'true' for First Run and 'false' for Not First Run
+            }
+            App.SaveShortcutOnDesktop = function () {
+                // Create shortcut on desktop
+                var HERE = Env.mountPath(Fso.formatPath("%ROOTDIR%"));
+                var desktop = Eng.Shell.SpecialFolders("Desktop");
+                var oShellLink = Eng.Shell.CreateShortcut(desktop + "\\Canicula.lnk");
+                oShellLink.Description = "Execute Canicula Anti-Ransomware Protection";
+                oShellLink.TargetPath = HERE + "\\canicula.exe";
+                oShellLink.WindowStyle = 1;
+                oShellLink.IconLocation = HERE + "\\public\\assets\\icons_256px\\logo_desktop.canico, 0";
+                oShellLink.WorkingDirectory = Env.WorkingDir;
+                oShellLink.Save();
+                return;
+            }
+            App.RemoveFirstRunMarker = function () {
+                var HERE = Env.mountPath(Fso.formatPath("%ROOTDIR%"));
+                Eng.Fso.DeleteFile(HERE + "\\lock\\fRun.canlock"); // remove firstRun lock
+                return;
+            }
+
+    App.RunOnStart = function () {
+        //kills the shell that opened it
+        var startup = Eng.HTA.commandLine;
+        var scheduled = false;
+		Vws.CenterWindow(false);
+		setTimeout( function base() {
+            if (startup.split(" ").includes(Cfg.CLI_API_KEY) && startup.split(" ").includes(Cfg.CLI_API_AUTOSTART)) { //scheduled start (autostart)
+                scheduled = true;
+                Sys.killProcessIM("canicula.exe");
+            } else if (startup.split(" ").includes(Cfg.CLI_API_KEY)) { // regular binary start (nonce start)
+                Sys.killProcessIM("canicula.exe");
+            } else { // irregular 'mshta %CD%/app.hta' start
+                alert("WARNING [LOW_PERMISSION_USER]: Starting the application as USER/" + Env.User + " (NOT recommended). \n\nUse the binary 'canicula.exe' to start as ADMIN (highly recommended)");
+            }
+		}, 500); //sleeps for 0.5 seconds, to resize the window properly
+        if (App.VerifyFirstRun()) { 
+            App.SaveShortcutOnDesktop();
+            App.RemoveFirstRunMarker();
+        }
+        Backup.Init(false);
+        if (Fso.verifyExistance(Env.WorkingDir+Cfg.lockFileDestination+Cfg.BackupLockFile)) { Backup.SyncAllFiles(false); }
+        Export_Frag.Status.AutoExec();
+        setTimeout( function base() { if (scheduled) { App.StartService(); }}, 500);
+        return 0;
+    }
+
+    return App;
+}).call();

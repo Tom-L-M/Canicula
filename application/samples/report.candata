@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title> Test Report </title>
+        <style>
+            * {
+                font-family:'Verdana';
+            }
+            #info-table-wrapper {
+                padding-top:20px;
+                padding-bottom:50px;
+            }
+            .info-table {
+                border: 1px solid black;
+                border-bottom: 0px;
+                width: 15%;
+                font-size: small;
+            }
+            .test-result-table {
+                border: 1px solid black;
+                width: 100%;
+                font-size: small;
+            }
+            .table-header-cell {
+                border-bottom: 1px solid black;
+                background-color: silver;
+                padding:10px;
+            }
+            .test-small-cell {
+                padding:10px;
+                background-color:white;
+                border-bottom:1px solid black;
+            }
+            .test-result-cell {
+                padding:10px;
+            }
+            tr:nth-child(even) {
+                background-color:rgb(230, 230, 230);
+            }
+
+        </style>
+    </head>
+    <body>
+        
+        <div id="info-table-wrapper" style="display:inline">
+            <h3 class="test-results-header">Environment</h3>
+            <table class="info-table" cellspacing="0">
+                <thead><tr></tr></thead>
+                <tbody>
+                    <tr>
+                        <td class="test-small-cell">Active User:</td>
+                        <td class="test-small-cell">{{USER}}</td>
+                    </tr>
+                    <tr>
+                        <td class="test-small-cell">MAC Address:</td>
+                        <td class="test-small-cell">{{MAC}}</td>
+                    </tr>
+                    <tr>
+                        <td class="test-small-cell">IP Address:</td>
+                        <td class="test-small-cell">{{IP}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="test-results-header">Log Report</h3>
+        <table class="test-result-table" cellspacing="0">
+            <thead>
+                <tr>
+                    <td class="table-header-cell">Date</td>
+                    <td class="table-header-cell">Time</td>
+                    <td class="table-header-cell">Process</td>
+                    <td class="table-header-cell">PID</td>
+                    <td class="table-header-cell">PPID</td>
+                    <td class="table-header-cell">Status</td>
+                    <td class="table-header-cell">Priority</td>
+                    <td class="table-header-cell">Threads</td>
+                    <td class="table-header-cell">Path</td>
+                    <td class="table-header-cell">Command Line</td>
+                </tr>
+            </thead>
+            <tbody>

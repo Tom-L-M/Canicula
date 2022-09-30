@@ -1,0 +1,37 @@
+(function() {
+    Import = function (f) { return eval((new ActiveXObject("Scripting.FileSystemObject")).OpenTextFile(f, 1).ReadAll()); } //This is needed to import other modules
+    
+    // Polyfill
+    Polyfill = Import('.\\src\\polyfill.canscript');
+    Polyfill_JSON = Import('.\\src\\polyfill_json.canscript');
+
+    // Modules (path reference is 'app.hta')                // # Dependencies    # Name                 # Description
+    // Core
+    Eng = Import('.\\core\\eng.canscript');                 // ; []              ; Engines              ; Includes ActiveX Engine objects (Shell and Fso)
+    Env = Import('.\\core\\env.canscript');                 // ; [eng]           ; Environment          ; Environment custom methods
+    Dbs = Import('.\\core\\dbs.canscript');                 // ; []              ; Databases            ; Database methods 
+    Cfg = Import('.\\core\\cfg.canscript');                 // ; []              ; Configs              ; Configurations file
+    Sys = Import('.\\core\\sys.canscript');                 // ; [eng]           ; System               ; System custom methods
+    Log = Import('.\\core\\log.canscript');                 // ; [eng]           ; Logs                 ; Logging module
+    Trg = Import('.\\core\\trg.canscript');                 // ; [sys]           ; Trigger              ; Application triggers to kill processes
+    Vws = Import('.\\core\\vws.canscript');                 // ; [cfg]           ; App View             ; App views rendering custom methods
+    Fso = Import('.\\core\\fso.canscript');                 // ; [eng]           ; FileSysObject        ; FileSystemObject custom methods
+    KNN = Import('.\\core\\knn.canscript');
+    
+    // Mid-Level
+    Crypto = Import('.\\src\\crypto.canscript');
+    KNNutils = Import('.\\src\\knnutils.canscript');
+    Settings = Import('.\\src\\settings.canscript');
+    Dump = Import('.\\src\\dump.canscript');
+    Backup = Import('.\\src\\backup.canscript');
+    ProcSUtils = Import('.\\src\\procsutils.canscript');
+    FileSUtils = Import('.\\src\\filesutils.canscript');
+    Service = Import('.\\src\\service.canscript');
+    Export_Frag = Import('.\\src\\export_frag.canscript');
+
+    // Top-Level
+    App = Import('.\\core\\app.canscript');
+    
+    //Exposes only the main app entry point function to the HTA file
+    return App.RunOnStart; 
+})()

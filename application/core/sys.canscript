@@ -1,0 +1,21 @@
+(function () {
+    var Sys = {}
+    Sys.getRunningProcesses = function(){ return new Enumerator(GetObject("WinMgmts:").InstancesOf("Win32_Process")); }
+    Sys.killProcess = function (processId) { Eng.HighShell.ShellExecute("taskkill", "/f /t /pid " + processId, null, "runas", 1); }
+    Sys.killProcessIM = function (IM) { Eng.HighShell.ShellExecute("taskkill", "/f /IM " + IM, null, "runas", 1); }
+    Sys.killItself = function () { return Eng.Shell.Run("taskkill /F /IM mshta.exe", 0, true); }
+    Sys.killStream = function (stream) { // the stream objects must be Win32_Process objects, not PID numbers
+        try {
+            var str = "";
+            var names = ""; //TODO: TESTING
+            for (var i = 0; i < stream.length; i++) {
+                str += " /pid " + stream[i].ProcessId;
+                names += " " + stream[i].Name;
+            }
+            Eng.HighShell.ShellExecute("taskkill", "/f /t " + str, null, "runas", 1);
+            alert("Killed: " + names); //TODO: testing
+            return 0;
+        } catch (err) { return 1; }
+    }
+    return Sys;
+}).call();

@@ -1,0 +1,55 @@
+(function() {
+
+    //NAMESPACES
+    var Export_Frag = {
+        Status:{},
+        Log:{},
+        Settings:{},
+        Dump:{},
+        Backup:{}
+    }
+
+    //AUTOEXECS
+    Export_Frag.Log.AutoExec = function () {
+        Vws.ResizeWindow(500,600);
+        Vws.LoadTab('log');
+        //Load logs and remove lines that are too long:
+        var content = Dbs.ReadRawData(".\\log\\log_vws.candata").split("\n").map(function (a) { return a.length > 82 ? a.substring(0,79)+"..." : a}).join("\n");
+        document.getElementById("log-display-section").value = content;
+        return 0;
+    }
+
+    Export_Frag.Settings.AutoExec = function () {
+        Vws.ResizeWindow(500,600);
+        Vws.LoadTab('settings');
+        Settings.LoadOptions();
+        Settings.LoadTrustedPrograms();
+        return 0;
+    }
+
+    Export_Frag.Status.AutoExec = function() {
+        Vws.ResizeWindow(500,600);
+        Vws.LoadTab("status");
+        if (App.Lock.Verify()) {  Vws.ServiceAreaActive(true); } //running
+        else { Vws.ServiceAreaActive(false); } //stopped
+        return 0;
+    }
+
+    Export_Frag.Dump.AutoExec = function () { 
+        Vws.ResizeWindow(500,600);
+        Vws.LoadTab('dump');
+        return 0;
+    }
+
+    Export_Frag.Backup.AutoExec = function () {
+        Vws.ResizeWindow(500,600);
+        Vws.LoadTab('backup');
+        Backup.Init(true);
+        Backup.UpdateBackupLock();
+        Backup.LoadFolderSize();
+        Backup.LoadFileList();
+        return 0;
+    }
+
+    return Export_Frag;
+}).call()

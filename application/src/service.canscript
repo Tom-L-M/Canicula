@@ -1,0 +1,38 @@
+(function () {
+    var Service = {
+        start: function() {
+            Cfg.LoadUpdates(); //reloads Cfg.safeProcesses
+            FileSUtils.createDecoyFiles(Cfg.locations(), Cfg.decoyContent);
+            Cfg.runninglocations = Cfg.locations(); //locations history, in case an entry is deleted
+            Vws.LoadingScreen(true);
+            setTimeout( function base() {
+                Cfg.filesentrytimeout = setInterval( function runner() {
+                    if (FileSUtils.verifyDecoyFiles(Cfg.locations()) == 1) {
+                        Trg.emergency(ProcSUtils.suspectProcSet, "Decoy files were not found, the system may be compromised"); 
+                        return 1
+                    }
+                } , Cfg.decoyCheckInterval );
+                Vws.ServiceAreaActive(true);
+                Vws.LoadingScreen(false);
+                //waits till the 3000ms timeout happens, to avoid a bug
+            }, 3000); //sleeps for 3 seconds, to create the decoy files properly
+            
+            setTimeout( function base() {
+                Cfg.procsentrytimeout = setInterval( function runner() { ProcSUtils.verifyProcDanger(); } , Cfg.procsentryInterval );
+            }, 100) //sleeps for 0.1 seconds, to set timers properly
+            
+            return 0;
+        },
+
+        kill: function() { //if ask = false, wont ask for confirmation
+            // If app is not closed properly, it uses the currently saved decoys do trace and delete
+            if (Cfg.runninglocations == null) { Cfg.runninglocations = Cfg.locations(); } 
+            if (Vws.getStatusTabContext()) { Vws.ServiceAreaActive(false); } //checks if it is currently in tab 'status' and if the buttons exist
+            clearInterval(Cfg.filesentrytimeout);
+            clearInterval(Cfg.procsentrytimeout);
+            FileSUtils.deleteDecoyFiles(Cfg.runninglocations);
+            return 0;
+        }
+    }
+    return Service;
+}).call();

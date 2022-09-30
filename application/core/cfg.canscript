@@ -1,0 +1,41 @@
+(function () {
+    var Cfg = {}
+        Cfg.AppVersion = eHTA.version; //imports version from app.hta HTA header definition
+        Cfg.lockFileDestination = "\\lock\\";
+        Cfg.lockFileContent = "0x000001";
+        Cfg.lockFileExtension = ".canlock";
+        Cfg.filesentrytimeout = 0; //holds the key to stop the service, don't delete it
+        Cfg.procsentrytimeout = 0;
+        Cfg.procsentryInterval = Dbs.ReadRawData(".\\configs\\procsentryinterval.candata");
+        Cfg.procsentryIntervalDefault = 200;
+        Cfg.decoyFilename = "__.candec.txt";
+        Cfg.decoyFileSize = 1000;
+        Cfg.decoyContent = Dbs.ReadRawData(".\\samples\\decoy.candata");
+        Cfg.locations = function () { //it won't update on paths added if it is not a function
+            return Dbs.ReadData(".\\configs\\customdecoylocations.candata").unique();
+        };
+        Cfg.runninglocations = null; //history of locations running, to avoid orphan decoys
+        Cfg.decoyCheckInterval = Dbs.ReadRawData(".\\configs\\decoycheckinterval.candata"); //all files are verified 10 times per second
+        Cfg.decoyCheckIntervalDefault = 100;
+        Cfg.dangerousProcesses = Dbs.ReadData(".\\database\\process_blacklist_dangerous.candata");
+        Cfg.safeProcesses = {
+            names: Dbs.ReadData(".\\database\\process_whitelist_names.candata").concat(Dbs.ReadData(".\\configs\\customtrustedprograms.candata")),
+            paths: Dbs.ReadData(".\\database\\process_whitelist_paths.candata")
+        }
+        Cfg.KNNconfig = {}
+        Cfg.KNNconfig.k = 5;
+        Cfg.helpContent = "..\\documentation\\docs.html";
+        Cfg.tmpFolder = "\\tmp\\";
+        Cfg.configsFolder = "\\configs\\";
+        Cfg.CLI_API_KEY = Dbs.ReadRawData(".\\env\\cli.api.candata");
+        Cfg.CLI_API_AUTOSTART = Dbs.ReadRawData(".\\env\\cli.autostart.candata");
+        Cfg.BackupFolder = "\\backup\\" + Env.User + "\\";
+        Cfg.BackupIndexFile = ".\\database\\backup_index.candata";
+        Cfg.BackupLockFile = "AutoSync" + Cfg.lockFileExtension;
+        Cfg.BackupFileExtension = '.canbkp';
+        Cfg.BackupFileSizeLimit = "100000000"; //100000000 bytes => 100 mb
+        Cfg.LoadUpdates = function () { //reloads Cfg.safeProcesses
+            Cfg.safeProcesses.names = Dbs.ReadData(".\\database\\process_whitelist_names.candata").concat(Dbs.ReadData(".\\configs\\customtrustedprograms.candata"));
+        }
+    return Cfg;
+}).call();

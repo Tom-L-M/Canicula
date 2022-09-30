@@ -1,0 +1,70 @@
+(function() {
+    var Dump = {}
+    
+    Dump.HashFile = function() {
+        var dorigin = document.getElementById("dump-dump-origin").value.replace(/\//gim, '\\').trim();
+        if (dorigin === null || dorigin === undefined || dorigin === '') { return 0; }
+        document.getElementById("dump-dump-hash").value = Crypto.HashFile_SHA256(dorigin);
+        return 0;
+    }
+
+    Dump.DumpFile = function() {
+        try {
+            //get the dump origin and destination:
+            var dorigin = document.getElementById("dump-dump-origin").value.replace(/\//gim, '\\').trim();
+            var ddestin = document.getElementById("dump-dump-destination").value.replace(/\//gim, '\\').trim();
+            var ddestinFolder = ddestin.substring(0, ddestin.lastIndexOf('\\'));
+            var extension = dorigin.substring(dorigin.lastIndexOf(".")+1).trim().toLowerCase();
+
+            if (dorigin === null || dorigin === undefined || dorigin === '') { return 0; }
+            if (ddestin === null || ddestin === undefined || ddestin === '') { return 0; }
+    
+            if (!['bin', 'exe', 'dll', 'com'].includes(extension)) { alert("Error: choose a proper Windows PE executable file"); return 0; }
+            if (!Fso.verifyExistance(dorigin)) { alert("Error: origin file not found"); return 0; }
+            if (!Fso.verifyFolderExistance(ddestinFolder)) { alert("Error: destination folder not found"); return 0; }
+    
+            var fil = Eng.Fso.GetFile(dorigin).Size / 1000;
+            if (fil > 1000) { 
+                if (!confirm("Selected file's size is " + fil + "Kb. This may take some time.\nAre you sure you want to continue? \n(The operation can be aborted at any time with no risk, and will generate partial dumps)")) {
+                    return -1;
+                }
+            }
+
+            //get the dump type:
+            var dtype = 0, replacer = false;    
+            if (document.getElementById("dump-dump-type-simple").checked) { dtype = 0; }
+            else if (document.getElementById("dump-dump-type-formatted").checked) { dtype = 1; }
+            else if (document.getElementById("dump-dump-type-bytes").checked) { dtype = 3; }
+            else if (document.getElementById("dump-dump-type-ascii").checked) { dtype = 4; }
+            else if (document.getElementById("dump-dump-type-strings").checked) { dtype = 4; replacer = true; }
+
+            var sf = Eng.Shell.Exec("cscript.exe /nologo .\\integration\\vbscript\\hexdump.vbs " + dorigin + " " + dtype).StdOut.ReadAll();
+            var f = Eng.Fso.CreateTextFile(ddestin, true); //overrides existing file with the same name
+            f.Write((replacer) ? sf.match(/[a-zA-Z_$]{4,}/gim).join("\n") : sf);//get the strings in 'string dump' if the variable 'replacer' is true
+            f.Close();
+
+            //document.getElementById("dump-dump-hash").value = Crypto.HashFile_SHA256(dorigin);
+
+        } catch (err) {
+            document.getElementById("dump-dump-hash").val
+            alert("Error: Dump Failed : " + err.message)
+        }
+        return 0;
+    }
+
+    Dump.OpenDumpFile = function() { 
+        var p = document.getElementById("dump-dump-destination").value.replace(/\//gim, '\\').trim();
+        if (p == undefined || p == null || p == '') { return 0; }
+        if (!Fso.verifyExistance(p)) { return 0; }
+        return Eng.Shell.Exec("notepad.exe " + p); 
+    }
+
+    Dump.SearchOnWeb = function() {
+        var d = document.getElementById("dump-dump-origin").value.replace(/\//gim, '\\').trim();
+        if (d == undefined || d == null || d == '') { return 0; }
+        var dest = d.substring(d.lastIndexOf("\\") + 1);
+        return Eng.Shell.Exec('explorer "https://www.google.com/search?q=' + dest + '"');
+    }
+
+    return Dump;
+}).call()

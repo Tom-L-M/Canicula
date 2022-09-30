@@ -1,0 +1,42 @@
+<div class="export-wrapper">
+    <div id="dump-container">
+        <p class="dump-label" id="dump-title">Generate binary dump</p>
+
+        <div id="dump-dump-text-field">
+            <label for="dump-origin" class="dump-label"> File to Dump: </label>
+            <input type="file" class="dump-input-text" name="dump-origin" required id="dump-dump-origin">
+            <br/><br/>
+            <label for="dump-destination" class="dump-label"> Output File: </label>
+            <input type="file" class="dump-input-text" name="dump-destination" required id="dump-dump-destination">       
+        </div>
+
+        <fieldset id="dump-dump-field" class="dump-fieldset">
+            <legend class="dump-label">Dump Type</legend>
+        
+            <input class="dump-dump-type-radio" type="radio" id="dump-dump-type-simple" name="dump-type" value="0" checked>
+            <label for="dump-dump-type-simple" class="dump-label">Simple</label><br>
+
+            <input class="dump-dump-type-radio" type="radio" id="dump-dump-type-formatted" name="dump-type" value="1">
+            <label for="dump-dump-type-formatted" class="dump-label">Formatted</label><br>
+
+            <input class="dump-dump-type-radio" type="radio" id="dump-dump-type-bytes" name="dump-type" value="3">
+            <label for="dump-dump-type-bytes" class="dump-label">Raw Hex Bytes</label><br>
+
+            <input class="dump-dump-type-radio" type="radio" id="dump-dump-type-ascii" name="dump-type" value="4">
+            <label for="nfo-dump-type-ascii" class="dump-label">ASCII Bytes</label><br>
+
+            <input class="dump-dump-type-radio" type="radio" id="dump-dump-type-strings" name="dump-type" value="4">
+            <label for="nfo-dump-type-ascii" class="dump-label">Strings</label><br>
+        </fieldset>
+
+        <fieldset id="dump-dump-hash-field" class="dump-fieldset">
+            <legend class="dump-label">File Hash (SHA256)</legend>
+            <textarea readonly id="dump-dump-hash"></textarea>
+        </fieldset>   
+
+        <button id="dump-dump-button" onclick="Dump.DumpFile();"> <img src=".\\public\\assets\\icons_16px\\dump.canpng" alt=""> Generate Dump </button>
+        <button id="dump-hash-button" onclick="Dump.HashFile();"> <img src=".\\public\\assets\\icons_16px\\hash.canpng" alt=""> Generate Hash </button>
+        <button id="dump-open-dump-button" onclick="Dump.OpenDumpFile();"> <img src=".\\public\\assets\\icons_16px\\openfile.canpng" alt=""> Open dump </button> 
+        <button id="dump-searchonweb-button" onclick="Dump.SearchOnWeb();"> <img src=".\\public\\assets\\icons_16px\\websearch.canpng" alt=""> Search on Web </button> 
+    </div>
+</div>

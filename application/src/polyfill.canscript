@@ -1,0 +1,125 @@
+(function () {
+    // Adds support to a pseudo 'includes()' array method
+    Array.prototype.includes = function(str) { for (var i = 0; i < this.length; i++) { if (this[i] == str) { return true; } } return false; }
+
+    // Adds support to a pseudo 'join()' array method
+    Array.prototype.join = function(sep) { 
+        var ac = '';
+        for (var i = 0; i < this.length; i++) { ac += this[i] + sep; }
+        return ac.substring(0, ac.length - sep.length); // Removes the extra separator chars at the end
+    }
+
+    // Adds support to a pseudo 'reduce((a,b)=>a+b)' array method
+    Array.prototype.sumUp = function() {
+        var all = 0;
+        for (var i = 0; i < this.length; i++) { all = all + Number(this[i]); }
+        return all;
+    }
+
+    // Adds support to an method to get average value from a numeric array
+    Array.prototype.getAverage = function() {
+        var a = this.length;
+        if (a === 0) { return 0; }
+        return (Number(this.sumUp()) / a);
+    }
+
+    // Adds support to a 'trim' string method
+    String.prototype.trim = function() { return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, ''); }
+
+    // Adds support to 'map' Array method
+    Array.prototype.map = function(callback, thisArg) {
+        var T, A, k; 
+        if (typeof callback !== 'function') { throw new TypeError(callback + ' is not a function'); }
+        if (this == null) { throw new TypeError(' this is null or not defined'); } 
+        var O = Object(this); 
+        var len = O.length >>> 0;
+        if (arguments.length > 1) { T = thisArg; } 
+        A = new Array(len);
+        k = 0;
+        while (k < len) {
+            var kValue, mappedValue; 
+            if (k in O) { 
+                kValue = O[k]; 
+                mappedValue = callback.call(T, kValue, k, O);
+                A[k] = mappedValue;
+            } 
+            k++;
+        }
+        return A;
+    }
+
+    // Adds support to Object.keys();
+    Object.keys = (function() {
+        'use strict';
+        var hasOwnProperty = Object.prototype.hasOwnProperty,
+            hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString'),
+            dontEnums = [ 'toString', 'toLocaleString', 'valueOf', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'constructor' ],
+            dontEnumsLength = dontEnums.length;
+  
+        return function(obj) {
+            if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+                throw new TypeError('Object.keys chamado de non-object');
+            }
+            var result = [], prop, i;
+            for (prop in obj) {
+                if (hasOwnProperty.call(obj, prop)) { result.push(prop); }
+            }
+            if (hasDontEnumBug) {
+                for (i = 0; i < dontEnumsLength; i++) {
+                    if (hasOwnProperty.call(obj, dontEnums[i])) { result.push(dontEnums[i]); }
+                }
+            }
+            return result;
+        };
+    }());
+
+    // Adds support to Array.prototype.reduce();
+    Array.prototype.reduce = function(callback /*, valorInicial*/) {
+        'use strict';
+        if (this == null) { throw new TypeError('Array.prototype.reduce chamado é nulo (null) ou indefinido (undefined)'); }
+        if (typeof callback !== 'function') { throw new TypeError(callback + ' não é uma função'); }
+        var t = Object(this), len = t.length >>> 0, k = 0, value;
+        if (arguments.length == 2) {
+            value = arguments[1];
+        } else {
+            while (k < len && !(k in t)) { k++; }
+            if (k >= len) { throw new TypeError('Reduce possui um array vazio sem um valor inicial'); }
+            value = t[k++];
+        }
+        for (; k < len; k++) { if (k in t) { value = callback(value, t[k], k, t); } }
+        return value;
+    };
+
+    Array.prototype.filter = function (fun/*, thisArg*/) {
+        'use strict';
+            if (this === undefined || this === null) { throw new TypeError(); }
+            if (this == []) { return this; }
+        
+            var t = Object(this);
+            var len = t.length >>> 0;
+            if (typeof fun !== 'function') { throw new TypeError(); }
+        
+            var res = [];
+            var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
+            for (var i = 0; i < len; i++) {
+              if (i in t) {
+                var val = t[i];
+                if (fun.call(thisArg, val, i, t)) { res.push(val); }
+              }
+            }
+        
+        return res;
+    }
+
+    Array.prototype.unique = function () { return this.sort().filter(function(item, pos, ary) { return !pos || item != ary[pos - 1]; }); }
+
+    Array.prototype.indexOf = function (val) {
+        for (var i = 0; i < this.length; i++) {
+            if (this[i].toLowerCase() == val.toLowerCase()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+}).call();

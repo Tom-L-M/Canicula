@@ -1,0 +1,74 @@
+#backup-input-wrapper {
+    position:absolute;
+    top:10px;
+    left:10px;
+    width:432px;
+    height:415px;
+    padding:10px;
+    background-color: #333333;
+}
+.backup-interact-button {
+    width:107px;
+    border:none;
+    margin-right:1px;
+    color: #272727;
+    background-color: #c33e37;
+}
+.backup-file-input {
+    background-color: #272727;
+    width:431px;
+    border:none;
+    padding:3px;
+    margin:0;
+}
+.backup-interact-button:hover {
+    cursor: pointer;
+    background-color: #bd6f6a;
+}
+#backup-wrapper-title {
+    padding-left:36%;
+}
+#backup-current-files-wrapper {
+    position: absolute;
+    top: 145px;
+    left:20px;
+    height:265px;
+    width:407px;
+    padding: 10px;
+    border: 2px solid #272727;
+}
+#backup-current-files {
+    height:250px;
+    width:409px;
+    border:none;
+    outline:none;
+    overflow: auto;
+    /* Scrolling block */
+    scrollbar-face-color: #272727;
+    /* Track under the block */
+    scrollbar-track-color: #333333;
+    /* Small arrows to go up and down */
+    scrollbar-arrow-color: #272727;
+    /* Border around the block */
+    scrollbar-shadow-color: #333333;
+}
+#BackupLockFile {
+    width:215px;
+    border:none;
+    margin-top:1px;
+    margin-right:1px;
+    color: #272727;
+    background-color: #c33e37;
+}
+#BackupLockFile:hover {
+    cursor: pointer;
+    background-color: #bd6f6a;
+}
+#backup-size-field {
+    width:215px;
+    border:none;
+    margin-top:1px;
+    margin-right:1px;
+    color: #d3d3d3;
+    background-color: #333333;
+}

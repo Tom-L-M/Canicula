@@ -1,0 +1,12 @@
+(function () {
+    var Eng = {}
+    Eng.StartAppEngines = function () { //starts low-level functions to make the app work
+        Eng.Shell = new ActiveXObject("WScript.Shell");
+        Eng.Fso = new ActiveXObject("Scripting.FileSystemObject");
+        Eng.HighShell = new ActiveXObject("Shell.Application");
+        Eng.WBEM = new ActiveXObject("WbemScripting.SWbemLocator").ConnectServer("."); //not sure what this is :/
+        Eng.HTA = eHTA;
+    }
+    Eng.StartAppEngines(); //starts engines automatically (explicit starting is not necessary anymore)
+    return Eng; 
+}).call();

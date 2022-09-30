@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Webpage Title -->
+	<title>Sirius - Canicula</title>
+</head>
+
+<body>
+	<div style="margin-left:5%; padding:5%;">
+        <h1 id="canicula-v4-6-x-ransomware-protection-framework-for-windows">Canicula (v4.6.X) - Ransomware protection framework for Windows</h1>
+        <h3 id="table-of-contents-">Table of Contents:</h3>
+        <ul>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#protection">Protection</a><ul>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#activating">Activating</a></li>
+        <li><a href="#customizing">Customizing</a></li>
+        </ul>
+        </li>
+        <li><a href="#logs">Logs</a><ul>
+        <li><a href="#plaintext">Plaintext</a></li>
+        <li><a href="#html-reports">HTML Reports</a></li>
+        <li><a href="#siem-integration-logs">SIEM Integration Logs</a></li>
+        </ul>
+        </li>
+        <li><a href="#backups">Backups</a><ul>
+        <li><a href="#managing-file-backups">Managing file backups</a></li>
+        <li><a href="#autosync">AutoSync</a></li>
+        <li><a href="#multi-user-backups">Multi user backups</a></li>
+        </ul>
+        </li>
+        <li><a href="#hex-dumps">Hex Dumps</a><ul>
+        <li><a href="#dump-modes">Dump Modes</a></li>
+        <li><a href="#generating-hashes">Generating Hashes</a></li>
+        <li><a href="#other-options">Other Options:</a></li>
+        </ul>
+        </li>
+        <li><a href="#extras">Extras</a><ul>
+        <li><a href="#virustotal-integration">VirusTotal Integration</a></li>
+        <li><a href="#portable-mode">Portable Mode</a></li>
+        <li><a href="#uninstalling-the-application">Uninstalling the Application</a></li>
+        <li><a href="#Enabling-&#39;Run-On-Startup&#39;-Mode">Enabling &#39;Run On Startup&#39; Mode</a></li>
+        </ul>
+        </li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#warnings-and-errors">Warnings and errors:</a></li>
+        </ul>
+        <hr>
+        <h2 id="installation">Installation</h2>
+        <ol>
+        <li>Access the official <a href="https://sirius-canicula.tluchesi.repl.co/">canicula website</a></li>
+        <li>Download the installer</li>
+        <li>Click twice to start the installation wizard, and follow the steps.</li>
+        <li>Done! A shortcut will be created automatically in Desktop, and you can start using the app. </li>
+        <li>(To uninstall the application, see <a href="#uninstalling-the-application">Uninstalling the Application</a>)</li>
+        </ol>
+        <hr>
+        <h2 id="protection">Protection</h2>
+        <h3 id="how-it-works">How it works</h3>
+        <p>The anti-ransomware protection is based on both IA analysis and decoy system</p>
+        <h3 id="activating">Activating</h3>
+        <ul>
+        <li>To activate/deactivate the protection, simply press the <code>Start</code>/<code>Stop</code> button in the <code>Status</code> upper tab</li>
+        </ul>
+        <h3 id="customizing">Customizing</h3>
+        <ul>
+        <li>The <code>Settings</code> tab provide protection customization options: <ul>
+        <li><code>Process Verification Interval</code>: Change the number in this field to change the frequency of process analysis on the machine. It is measured in milliseconds, and lower values means higher machine resource usage, but also a higher protection. The recommended value lies between <code>200</code> and <code>300</code>, to not compromise performance, while still keeping a very high protection level. </li>
+        <li><code>Decoy Verification Interval</code>: Change the number in this field to change the frequency of the honeypot files verification. It is measured in milliseconds, and lower values means higher machine resource usage, but also a higher protection. As malware encryption is done within milisseconds range, the recommended value lies between <code>100</code> and <code>200</code>.</li>
+        <li><code>Add decoy locations</code>: Type a folder path in this field, to add a custom decoy file in there and increase security. (Important: unexistent paths will be simply ignored, so be sure that it is typed correctly) (Also Important: If you do not have permission to access a certain folder, creating a decoy in there will generate a <a href="#warnings-and-errors">[LOW_PERMISSION_USER]</a> error and stop protection).</li>
+        <li><code>Remove decoy locations</code>: Select a path from the dropdown menu and click &#39;remove&#39;, to remove it from the decoys created on protection activation. Customizations made in this field while the protection is active will only be reflected on the next <a href="#activating">protection startup</a>.</li>
+        <li><code>Add trusted programs</code>: Type a program&#39;s executable name to add it in a custom whitelist, in case the application is incorrectly recognizing it as malicious. WARNING: Only do this if you are sure about the program&#39;s safety.</li>
+        <li><code>Remove trusted programs</code>: Select a path from the dropdown menu and click &#39;remove&#39;, to remove it from the program whitelist on protection activation. Customizations made in this field while the protection is active will only be reflected on the next <a href="#activating">protection startup</a>.</li>
+        </ul>
+        </li>
+        </ul>
+        <hr>
+        <h2 id="logs">Logs</h2>
+        <p>Logs can be generated in three different formats: <code>plaintext</code>, <code>HTML</code>, and <code>SIEM-integration plaintext</code>.</p>
+        <h3 id="plaintext">Plaintext</h3>
+        <p>The plaintext generated logs are the application&#39;s default, and are displayed in the <code>Logs</code> tab. To download the current log file, click on the &#39;Download&#39; button and type or paste a folder path as destination.</p>
+        <h3 id="html-reports">HTML Reports</h3>
+        <p>HTML Reports can be generated on demand, by clicking on the HTML Document icon. The report will not be downloaded, instead it will be opened on the default browser, and from there it can be downloaded using the browser-specific configurations, or printing.</p>
+        <h3 id="siem-integration-logs">SIEM Integration Logs</h3>
+        <p>To allow the integration of SIEM softwares and response to event detection, and automatic event log file is generated using <a href="https://www.elastic.co/pt/">Elastic</a> formatting. To integrate the two services, simply feed the SIEM platform with the proper logs generated by canicula. To download the SIEM-friendly file, click on the &#39;SIEM&#39; icon and type or paste a folder path as destination. Alternatively, you can reach the log files by accessing the path <code>&lt;installation_path&gt;/canicula/application/log/</code>, ehere the SIEM-friendly file is <code>log_siem.candata</code>.</p>
+        <hr>
+        <h2 id="backups">Backups</h2>
+        <h3 id="managing-file-backups">Managing file backups</h3>
+        <p>Backups work under a path definition directive, which means the are binded to existing files, instead of virtual paths. </p>
+        <ul>
+        <li><strong>Adding Files:</strong> Select a file in the proper field, and click <code>Add</code> to add it to the backup pool. A precise copy of this file will be stored. </li>
+        <li><strong>Syncing Files:</strong> To force the syncing of a file in the backup pool, select the file in the proper field, and click <code>Sync</code>, and the file&#39;s contents in the backup pool will be updated.</li>
+        <li><strong>Removing Files:</strong> To remove a file from the backup pool, use the file field to select the original file that is in the pool and click <code>Remove</code>.</li>
+        <li><strong>Restore File:</strong>  Select a file in the proper field, and click <code>Restore</code> to restore it&#39;s data from the backup pool. This will override the original file, and restire the data stored in the counterpart in the pool.</li>
+        <li><strong>Syncing All Files:</strong> This option does not need a file to be selected first, and forces the sinchronization of all files in the backup pool, with their counterpart in the computer.</li>
+        <li><strong>Removing All Files:</strong> This option removes all the backup files in the pool. Warning: this action is irreversible, but will not affect the original files, only their counterpart in backup pool.</li>
+        </ul>
+        <h3 id="autosync">AutoSync</h3>
+        <p>AutoSync option allows for automatic synchronization of files in backup pool on app startup, which means when tha application is started, all files in backup pool will be overriden, be careful and only turn this option ON in an secure environment.</p>
+        <h3 id="multi-user-backups">Multi user backups</h3>
+        <p>By default, the backup pool is divided in user folders, to allow multi-user and portable executions. This means files that were added to backup pool by an user will not be displayed and cannot be edited by other users, increasing privacy. But, the total backup size shown in the <code>info</code> section, includes the files backed up by all users.</p>
+        <hr>
+        <h2 id="hex-dumps">Hex Dumps</h2>
+        <p>The <code>Dump</code> tab allows for windows executable (PE files) hexadecimal dumping. Select a PE file, an output file and a dump mode, and press <code>Generate Dump</code>. (Important: depending on the file size, this may take some time)</p>
+        <h3 id="dump-modes">Dump Modes</h3>
+        <ul>
+        <li><strong>Simple:</strong> Returns the default dumping pattern: Hexadecimal offsets, hex bytes, and the bytes converted to ASCII encoding.</li>
+        <li><strong>Formatted:</strong> Returns the default dumping pattern, with formatting headers: Hexadecimal offsets, hex bytes, and the bytes converted to ASCII encoding.</li>
+        <li><strong>Raw Hex Bytes:</strong> Returns only the raw hex bytes from the file. Separated by spaces and in 16-byte lines.</li>
+        <li><strong>ASCII Bytes:</strong> Returns only the bytes converted to ASCII encoding, in 16-byte lines.</li>
+        <li><strong>Strings:</strong> Returns all the strings found in teh executable file. The string-finding pattern includes strings with length 4 or more, including the alphabet letters in lower and upper case, plus <code>_</code> and <code>$</code>.</li>
+        </ul>
+        <h3 id="generating-hashes">Generating Hashes</h3>
+        <p>Select an Windows executable file in the <code>File to Dump</code> field, and click <code>Generate Hash</code> button, to generate the SHASUM (SHA 256 hash) of the selected file.</p>
+        <h3 id="other-options-">Other Options:</h3>
+        <ul>
+        <li><strong>Open Dump:</strong> Select a file in the <code>Output File</code> field, and click <code>Open Dump</code> to open a dump file with <code>notepad.exe</code>. </li>
+        <li><strong>Search On Web:</strong> Select an Windows executable file in the <code>File to Dump</code> field, and click <code>Search on Web</code> to search for the file&#39;s name in the default browser.</li>
+        </ul>
+        <hr>
+        <h2 id="extras">Extras</h2>
+        <h3 id="virustotal-integration">VirusTotal Integration</h3>
+        <p>As the default hash of used in the VirusTotal service is SHA256, the hashes generated from files with the app can be inputed to <a href="https://www.virustotal.com/gui/home/search">VirusTotal</a> in order to search for vendor analysis of the file.</p>
+        <h3 id="portable-mode">Portable Mode</h3>
+        <p>As the application is self-contained, it can be installed as portable just by extracting its folder into an portable storage device. </p>
+        <h3 id="uninstalling-the-application">Uninstalling the Application</h3>
+        <p>To uninstall the app, stop any running services and then go to the Start Menu, or the Application Manager, click on the app with the mouse right button and select the &quot;Uninstall&quot; option.</p>
+        <h3 id="enabling-run-on-startup-mode">Enabling &#39;Run On Startup&#39; Mode</h3>
+        <p>To enable the app to autostart with the machine startup, follow these steps: </p>
+        <ul>
+        <li>(To start the app, but not the protection service, simply remove the &#39;--autostart&#39; flag from the snippets below)</li>
+        </ul>
+        <ol>
+        <li>Create a custom shortcut to the application, or copy the one generated on Desktop.</li>
+        <li>Configure the shortcut:<ol>
+        <li>&#39;Target&#39; property set to [ &quot;Your-Installation-Path\canicula\application\canicula.exe&quot; --autostart ]. <ul>
+        <li>(EX: &quot;C:\Program Files (x86)\canicula\application\canicula.exe&quot; --autostart)</li>
+        </ul>
+        </li>
+        <li>&#39;Start in&#39; property set to [  &quot;Your-Installation-Path\canicula\application&quot; ]</li>
+        </ol>
+        </li>
+        <li>To enable Run On Startup for all users:<ul>
+        <li>Type <code>Windows + r</code> and then <code>Shell:Commom Startup</code> (or go to <code>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp</code>) and move the custom shortcut in there</li>
+        </ul>
+        </li>
+        <li>To enable Run On Startup for the current user:<ul>
+        <li>Type <code>Windows + r</code> and then <code>Shell:Startup</code>, and move the custom shortcut in there</li>
+        </ul>
+        </li>
+        </ol>
+        <hr>
+        <h2 id="faq">FAQ</h2>
+        <ul>
+        <li><strong>The application just disappeared?</strong></li>
+        </ul>
+        <p>Some anti-virus softwares may incorrectly label the application as malware, and therefore delete its executable file. There is no permanent fix for this, as third-party software may or may not accept the app as secure. But it is possible to fix this for the current machine by following these steps:</p>
+        <ol>
+        <li>First, uninstall the application, as it is already incomplete because of anti-virus file deletion.</li>
+        <li>Go to the path where you want to install the application, and create a folder called <code>user_secure</code></li>
+        <li>Access your anti-virus software and add the recently created <code>user_secure</code> folder to the verification exclusions. (This will force the anti-virus to not search for malware in this folder).</li>
+        <li>Reinstall the application in this folder.</li>
+        </ol>
+        <hr>
+        <h2 id="warnings-and-errors-">Warnings and errors:</h2>
+        <ul>
+        <li><strong>[LOW_PERMISSION_USER]:</strong><ul>
+        <li><strong>Cause</strong>: This warning indicates that the program is running under a low-permission environment or context</li>
+        <li><strong>Consequences</strong>: This may generate permission-related errors on backup deleting and protection activation/deactivation.</li>
+        <li><strong>Workarounds</strong>: <ul>
+        <li>Start the application as Administrator.</li>
+        <li>Access the <code>Settings</code> tab, and in the <code>Remove Decoy Locations</code> option, select and remove the following paths (if present): <code>C:\</code>, <code>C:\Users</code>, <code>C:\Program Files</code>, <code>C:\Program Files (x86)</code>, <code>C:\Program Files\Common Files</code> and <code>C:\Program Files (x86)\Common Files</code> (and any other path that points to a folder where you would need administrator rights to create a hidden file).</li>
+        <li>If nothing works, check with your system administrator to change the user permissions and allow the app to run properly.</li>
+        </ul>
+        </li>
+        </ul>
+        </li>
+        </ul>
+	</div>
+</body>
+</html>

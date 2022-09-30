@@ -1,0 +1,122 @@
+.dump-label {
+    color:#d3d3d3;
+}
+.dump-fieldset {
+    border: 2px solid #272727;
+}
+#dump-container {
+    position:absolute;
+    top:10px;
+    left:10px;
+    width:453px;
+    height:435px;
+    background-color: #333333;
+}
+#dump-title {
+    position:absolute;
+    top:20px;
+    left:30%;
+}
+.dump-dump-type-radio {
+    cursor: pointer;
+}
+#dump-dump-text-field {
+    position:absolute;
+    top:60px;
+    left:10px;
+    height:100px;
+    padding:10px;
+}
+.dump-input-text {
+    background-color: #272727;
+    border:none;
+    padding:3px;
+    width: 399px;
+}
+#dump-dump-field {
+    position:absolute;
+    top:185px;
+    left:20px;
+    padding:10px;
+    outline:#272727;
+}
+#dump-dump-hash-field {
+    position:absolute;
+    top:185px;
+    left:220px;
+    padding:10px;
+    height:118px;
+    width:182px;
+}
+#dump-dump-hash {
+    width:179px;
+    height:100px;
+    background-color: #272727;
+    overflow: hidden;
+    outline:none;
+    border:none;
+    overflow: auto;
+    /* Scrolling block */
+    scrollbar-face-color: #272727;
+    /* Track under the block */
+    scrollbar-track-color: #333333;
+    /* Small arrows to go up and down */
+    scrollbar-arrow-color: #272727;
+    /* Border around the block */
+    scrollbar-shadow-color: #333333;
+
+}
+#dump-hash-button {
+    position:absolute;
+    top:345px;
+    left:228px;
+    width:200px;
+    height:30px;
+    border:none;
+    outline: none;
+    vertical-align: middle;
+    color: #272727;
+    background-color: #c33e37;
+}
+#dump-dump-button {
+    position:absolute;
+    top:345px;
+    left:20px;
+    width:198px;
+    height:30px;
+    border:none;
+    outline: none;
+    vertical-align: middle;
+    color: #272727;
+    background-color: #c33e37;
+}
+#dump-dump-button:hover, #dump-open-dump-button:hover, #dump-searchonweb-button:hover, #dump-hash-button:hover {
+    cursor: pointer;
+    background-color: #bd6f6a;
+}
+#dump-open-dump-button {
+    position:absolute;
+    top:385px;
+    left:20px;
+    width:198px;
+    height:30px;
+    border:none;
+    outline: none;
+    padding-top:2px;
+    padding-right:5px;
+    color:#272727;
+    background-color:#c33e37;
+}
+#dump-searchonweb-button {
+    position:absolute;
+    top:385px;
+    left:228px;
+    width:198px;
+    height:30px;
+    border:none;
+    outline: none;
+    padding-top:2px;
+    padding-right:5px;
+    color:#272727;
+    background-color:#c33e37;
+}

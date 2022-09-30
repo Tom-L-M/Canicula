@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <HTA:APPLICATION 
+            ID="eHTA" 
+            APPLICATIONNAME="canicula"
+            NAVIGABLE="yes"
+            ICON=".\public\assets\icons_256px\logo.ico" 
+            MINIMIZEBUTTON="no"
+            MAXIMIZEBUTTON="no" 
+            BORDER="dialog" 
+            BORDERSTYLE="normal" 
+            CAPTION="yes"
+            CONTEXTMENU="no"
+            SHOWINTASKBAR="yes" 
+            INNERBORDER="no"
+            SCROLL="no" 
+            SCROLLFLAT="no"
+            SINGLEINSTANCE="yes"
+            SELECTION="no"
+            SYSMENU="no"
+            WINDOWSTATE="normal"
+            VERSION="4.8.0"
+        ></HTA:APPLICATION> 
+        <title> Canicula </title>
+            <!-- <meta http-equiv="x-ua-compatible" content="IE=9" /> -->
+            <!-- Adds Native Suport to JSON, but REMOVES SUPPORT TO PROCESSES with GetObject() -->
+            <!-- Bypassed by implementing the JSON polyfill in '.\src\polyfill_json.canscript' -->
+        <link rel="stylesheet" href=".\public\styles\global.cancss">
+        <link rel="stylesheet" href=".\public\styles\status.cancss">
+        <link rel="stylesheet" href=".\public\styles\log.cancss">
+        <link rel="stylesheet" href=".\public\styles\settings.cancss">
+        <link rel="stylesheet" href=".\public\styles\dump.cancss"> 
+        <link rel="stylesheet" href=".\public\styles\backup.cancss"> 
+    </head>
+    <body>
+        <script language="JavaScript"> window.onload = function() { eval((new ActiveXObject("Scripting.FileSystemObject")).OpenTextFile(".\\application.canscript",1).ReadAll())(); } </script>
+
+        <div class="header">
+            <div id="logo"></div>
+            <div id="tabs">
+                <button class="tab" onclick="Export_Frag.Status.AutoExec();"> <img src=".\public\assets\icons_24px\status.canpng" alt="Status"> </button>
+                <button class="tab" onclick="Export_Frag.Settings.AutoExec();"> <img src=".\public\assets\icons_24px\settings.canpng" alt="Settings"> </button>
+                <button class="tab" onclick="Export_Frag.Log.AutoExec();"> <img src=".\public\assets\icons_24px\logs.canpng" alt="Logs"> </button>
+                <button class="tab" onclick="Export_Frag.Backup.AutoExec();"> <img src=".\public\assets\icons_24px\backup.canpng" alt="Backup"> </button>
+                <button class="tab" onclick="Export_Frag.Dump.AutoExec();"> <img src=".\public\assets\icons_24px\dump.canpng" alt="Dump"> </button>
+                <button class="tab" onclick="App.Close();" language="JavaScript"> <img src=".\public\assets\icons_24px\exit.canpng" alt="Exit"> </button> 
+            </div>
+        </div>
+        <div id="glob">
+            <div id="wrapper"></div>
+            <div id="loading-placeholder"></div>
+        </div>
+        <div class="footer">
+            <div id="footer-tabs">
+                <button class="footer-tab" onclick="Vws.ReduceWindow()"> <img src=".\public\assets\icons_16px\reduce.canpng" alt="Reduce Window"> </button>
+                <button class="footer-tab" onclick="Vws.OpenGithub()"> <img src=".\public\assets\icons_16px\github.canpng" alt="Github"> </button>
+                <button class="footer-tab" onclick="Vws.ShowHelp()"> <img src=".\public\assets\icons_16px\help.canpng" alt="Help"> </button>
+                <button class="footer-tab" onclick="Vws.ShowInfo()"> <img src=".\public\assets\icons_16px\info.canpng" alt="About"> </button>
+            </div>
+        </div>
+    </body>
+</html>

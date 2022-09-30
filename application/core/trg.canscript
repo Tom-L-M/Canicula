@@ -1,0 +1,16 @@
+(function () {
+    var Trg = {}
+    Trg.emergency = function(dynamic, message) {
+        try{
+            Sys.killStream(dynamic); //here dynamic must be an Win32_Process object array
+        } catch(e){
+            alert("Custom Unhandled Exception: " + e.description);
+            return 1;
+        }
+        alert("Killed " + dynamic.length + " processes");
+        alert(message);
+        App.StopService();
+        return 0;
+    }
+    return Trg;
+}).call();

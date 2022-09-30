@@ -1,0 +1,18 @@
+<div class="export-wrapper">
+    <div id="backup-input-wrapper">
+        <p id="backup-wrapper-title">Backup Manager</p>
+        <input type="file" class="backup-file-input" name="backup-input" required id="backup-input">
+        <button class="backup-interact-button" onclick="Backup.AddFile(document.getElementById('backup-input').value.trim())" id="backup-interact-button-1">Add</button>
+        <button class="backup-interact-button" onclick="Backup.RemoveFile(document.getElementById('backup-input').value.trim())">Remove</button>
+        <button class="backup-interact-button" onclick="Backup.SyncFile(document.getElementById('backup-input').value.trim())">Sync</button>
+        <button class="backup-interact-button" onclick="Backup.Restore(document.getElementById('backup-input').value.trim());">Restore</button>
+        <button class="backup-interact-button" onclick="Backup.SyncAllFiles(true)">Sync. All</button>
+        <button id="BackupLockFile" onclick="Backup.SwitchBackupLock()">AutoSync: <span id="BackupLockFile-status"></span></button> 
+        <button class="backup-interact-button" onclick="Backup.Clear();">Clear</button>
+        <br/>
+    </div>
+    <fieldset id="backup-current-files-wrapper" class="backup-fieldset">
+        <legend class="backup-fieldset-legend">Files In Backup: (<span id="backup-size-field-status"></span>)</legend>
+        <div id="backup-current-files"></div>
+    </fieldset>
+</div>

@@ -1,0 +1,20 @@
+<div class="export-wrapper">
+    <div>
+        <p id="log-display-label">Date: &nbsp; Time: &nbsp; &nbsp; PID: &nbsp; &nbsp; &nbsp;Process:<br/></p>
+        <textarea readonly id="log-display-section"></textarea>
+    </div>
+    <div id="log-export-wrapper">
+        <button class="log-tab" onclick="Log.GenerateReport();">
+            <img src=".\\public\\assets\\icons_24px\\htmldoc.canpng" alt="Generate HTML Report"> 
+        </button>
+        <button class="log-tab" onclick="Log.GenerateSIEMReport();">
+            <img src=".\\public\\assets\\icons_24px\\siem.canpng" alt="Download SIEM-Friendly Report"> 
+        </button>
+        <button class="log-tab" onclick="Log.DownloadLogs();">
+            <img src=".\\public\\assets\\icons_24px\\download.canpng" alt="Download Logs"> 
+        </button>
+        <button class="log-tab" onclick="Log.ClearLogs();"> <!-- It reloads the tab after cleaning the logs, to update the view -->
+            <img src=".\\public\\assets\\icons_24px\\trashcan.canpng" alt="Clear Logs"> 
+        </button>
+    </div>
+</div>

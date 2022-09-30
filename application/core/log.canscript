@@ -1,0 +1,121 @@
+(function () {
+    var Log = {}
+        Log.acc = {} //accumulators
+        Log.write = function (filename, content) {
+            var tf = Eng.Fso.CreateTextFile(filename, true);
+            tf.Write(content);
+            tf.Close();
+        }
+        Log.Accumulate = function (accName, content) { 
+            if (Log.acc[accName] == undefined) { Log.acc[accName] = ''; }; Log.acc[accName] += content; 
+            return Log.acc[accName]; 
+        }
+        Log.WriteAccumulated = function (filename, accName) {
+            var tf = Eng.Fso.CreateTextFile(filename, true);
+            tf.Write(Log.acc[accName]);
+            tf.Close();
+            return 0;
+        }
+        Log.AppendAccumulated = function (filename, accName) {
+            var tf = Eng.Fso.OpenTextFile(filename,8,false); //opened for appending => creates a bug
+            //var tf = Eng.Fso.OpenTextFile(filename,2,false); //opened for writing => don't work :/
+            //var curr = Dbs.ReadRawData(filename);
+            //tf.Write(curr + Log.acc[accName]);
+            tf.Write(accName);
+            tf.Close();
+            return 0;
+        }
+        Log.DownloadLogs = function () {
+            var defaultlocation = 'C:\\Users\\' + Env.User + '\\Downloads';
+            var selected = prompt('Select the download destination: ', defaultlocation);
+            try {
+                if (selected !== null && Fso.verifyFolderExistance(selected)) {
+                    var d_t = new Date();
+                    var d_t_o = {
+                        y: d_t.getFullYear(),
+                        m: ("0" + (d_t.getMonth() + 1)).slice(-2),
+                        d: ("0" + d_t.getDate()).slice(-2),
+                        hou: d_t.getHours(),
+                        min: d_t.getMinutes(),
+                        sec: d_t.getSeconds()
+                    }
+                    // prints date & time in YYYY-MM-DD_HH-MM-SS format
+                    var rs = d_t_o.d + "." + d_t_o.m + "." + d_t_o.y + "_" + d_t_o.hou + "h" + d_t_o.min + "m" + d_t_o.sec + "s";
+
+                    Eng.Fso.CopyFile(".\\log\\log_vws.candata", selected + "\\canicula_" + rs + ".log", false);
+                }
+            } catch (err) { //actually, this is not necessary, but, just for precaution ¨\_('-')_/¨
+                alert("Impossible to complete log export: " + err.message);
+            }
+        }
+        Log.ClearLogs = function() {
+            if (!confirm("Delete all logs? (This is an irreversible action)")) { return 0; }
+            
+            var f = Eng.Fso.CreateTextFile(".\\log\\log_vws.candata", true); //overrides the previous log file, to delete all content
+            f.Write(" "); // Writes a byte on the file, to avoid the empty-file bug
+            f.Close();
+            
+            var g = Eng.Fso.CreateTextFile(".\\log\\log_report.candata", true);//overrides the previous log file, to delete all content
+            g.Write(" "); // Writes a byte on the file, to avoid the empty-file bug
+            g.Close();
+
+            var h = Eng.Fso.CreateTextFile(".\\log\\log_siem.candata", true);
+            h.Write(" "); // Writes a byte on the file, to avoid the empty-file bug
+            h.Close();
+
+            Vws.LoadTab('log');
+            return 0;
+        }
+        Log.GenerateReport = function () {
+            var acc = []; 
+            var rhead = Dbs.ReadRawData(".\\samples\\report.candata");
+            var rdata = Dbs.ReadRawData(".\\log\\log_report.candata").trim().split("\n");
+            //replace Field Variables: 
+                rhead = rhead.replace(/{{MAC}}/gim, Env.NetAddress.MAC);
+                rhead = rhead.replace(/{{IP}}/gim, Env.NetAddress.IP);
+                rhead = rhead.replace(/{{USER}}/gim, Env.User);
+            acc.push(rhead);
+
+            for (var i = 0; i < rdata.length; i++) {
+                var base = [];
+                var fields = rdata[i].split("$C");
+                base.push('<tr class="test-result-step-row">');
+                for (var j = 0; j < fields.length; j++) {
+                    base.push('<td class="test-result-cell">' + fields[j] + '</td>');
+                }
+                base.push('</tr>');
+                acc.push(base.join('\n'));
+            }
+            acc.push("</tbody></table></body></html>");
+
+            var loc = "." + Cfg.tmpFolder + 'report.html';
+            var tf = Eng.Fso.CreateTextFile(loc, true);
+                tf.Write(acc.join('\n'));
+                tf.Close();        
+            return Eng.Shell.Exec('explorer ' + loc);
+        }
+        Log.GenerateSIEMReport = function () {
+            var defaultlocation = 'C:\\Users\\' + Env.User + '\\Downloads';
+            var selected = prompt('Select the download destination: ', defaultlocation);
+            try {
+                if (selected !== null && Fso.verifyFolderExistance(selected)) {
+                    var d_t = new Date();
+                    var d_t_o = {
+                        y: d_t.getFullYear(),
+                        m: ("0" + (d_t.getMonth() + 1)).slice(-2),
+                        d: ("0" + d_t.getDate()).slice(-2),
+                        hou: d_t.getHours(),
+                        min: d_t.getMinutes(),
+                        sec: d_t.getSeconds()
+                    }
+                    // prints date & time in YYYY-MM-DD_HH-MM-SS format
+                    var rs = d_t_o.d + "." + d_t_o.m + "." + d_t_o.y + "_" + d_t_o.hou + "h" + d_t_o.min + "m" + d_t_o.sec + "s";
+
+                    Eng.Fso.CopyFile(".\\log\\log_siem.candata", selected + "\\canicula_SIEM_REPORT_" + rs + ".log", false);
+                }
+            } catch (err) { //actually, this is not necessary, but, just for precaution ¨\_('-')_/¨
+                alert("Impossible to complete log export: " + err.message);
+            }
+        }
+    return Log;
+}).call();

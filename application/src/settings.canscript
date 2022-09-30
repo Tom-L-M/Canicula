@@ -1,0 +1,91 @@
+(function () {
+    var Settings = {}
+    //all confs: "customdecoylocations" | "decoycheckinterval" | "procsentryinterval"
+
+        Settings.ClearFields = function () {
+            document.getElementById("decoycheckinterval-editor").value = Dbs.ReadData("." + Cfg.configsFolder + "decoycheckinterval.candata");
+            document.getElementById("procsentryinterval-editor").value = Dbs.ReadData("." + Cfg.configsFolder + "procsentryinterval.candata");
+            document.getElementById("customdecoylocations-editor").value = "";
+            document.getElementById("safeprograms-editor").value = "";
+            return 0;
+        }
+        Settings.LoadOptions = function () {
+            Settings.ClearFields();
+            var placeholder = document.getElementById("decoylocationslist");
+            placeholder.innerHTML = "";
+            var current = Dbs.ReadData(".\\configs\\customdecoylocations.candata");
+            for (var i = 1; i < current.length; i++) { //starts on 1, as [0] is %ROOTDIR%
+                current[i] = current[i].trim();
+                placeholder.options[placeholder.options.length] = new Option(current[i], current[i]);
+            }
+            return 0;
+        }
+        Settings.LoadTrustedPrograms = function () {
+            Settings.ClearFields();
+            var placeholder = document.getElementById("safeprogramslist");
+            placeholder.innerHTML = "";
+            var current = Dbs.ReadData(".\\configs\\customtrustedprograms.candata");
+            for (var i = 1; i < current.length; i++) { //starts on 1, as [0] is %ROOTDIR%
+                current[i] = current[i].trim();
+                placeholder.options[placeholder.options.length] = new Option(current[i], current[i]);
+            }
+            return 0;
+        }
+        Settings.Update = function (conf, val) { //confs changed by this: "decoycheckinterval" | "procsentryinterval"
+            if (!conf || !val || val == "" || Number(val) == NaN) { return 0; }
+            Dbs.WriteRawData("." + Cfg.configsFolder + conf + ".candata", val);
+            Settings.ClearFields();
+            return 0;
+        }
+        Settings.AddValue = function (val) {
+            var current = Dbs.ReadData(".\\configs\\customdecoylocations.candata");
+            current.push(val);
+            current = current.unique()
+            Dbs.WriteData(".\\configs\\customdecoylocations.candata", current);
+            Settings.LoadOptions();
+            return 0;
+        }
+        Settings.DeleteValue = function () { //confs changed by this function:  "customdecoylocations"
+            var current = Dbs.ReadData(".\\configs\\customdecoylocations.candata");
+            var select = document.getElementById("decoylocationslist");
+            if (select.options.length == 0) { return 0; }
+            var selval = select.options[select.selectedIndex].value;
+            var place = current.indexOf(selval);
+            current.splice(place, 1);
+            Dbs.WriteData(".\\configs\\customdecoylocations.candata", current.unique());
+            Settings.LoadOptions();
+            return 0;
+        }
+        Settings.AddTrusted = function (val) {
+            var current = Dbs.ReadData(".\\configs\\customtrustedprograms.candata");
+            current.push(val);
+            current = current.unique().map(function(a) { return a.toLowerCase(); });
+            Dbs.WriteData(".\\configs\\customtrustedprograms.candata", current);
+            Settings.LoadTrustedPrograms();
+            return 0;
+        }
+        Settings.DeleteTrusted = function () {
+            var current = Dbs.ReadData(".\\configs\\customtrustedprograms.candata");
+            var select = document.getElementById("safeprogramslist");
+            if (select.options.length == 0) { return 0; }
+            var selval = select.options[select.selectedIndex].value;
+            var place = current.indexOf(selval);
+            current.splice(place, 1);
+            Dbs.WriteData(".\\configs\\customtrustedprograms.candata", current.unique());
+            Settings.LoadTrustedPrograms();
+            return 0;
+        }
+        Settings.SetDefaultValues = function () {
+            if (!confirm("This will reset all configurations, including custom decoy locations defined. Are you sure?")) { return 0; }
+            Settings.ClearFields();
+            Settings.Update("decoycheckinterval", Cfg.decoyCheckIntervalDefault);
+            Settings.Update("procsentryinterval", Cfg.procsentryIntervalDefault);
+            Dbs.WriteRawData(".\\configs\\customdecoylocations.candata", Dbs.ReadRawData(".\\database\\decoy_locations.candata")); //reset placeholders
+            Dbs.WriteRawData(".\\configs\\customtrustedprograms.candata", '"",""'); //reset placeholders
+            Settings.LoadOptions();
+            Settings.LoadTrustedPrograms();
+            return 0;
+        }
+
+    return Settings;
+}).call();

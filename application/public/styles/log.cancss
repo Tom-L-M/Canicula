@@ -1,0 +1,43 @@
+#log-export-wrapper {
+    position:absolute;
+    top:427px;
+    left:5px;
+    width:500px;
+    /* z-index: 9; */
+}
+.log-tab {
+    margin-top: 7px;
+    height: 30px;
+    width:116px;
+    background-color: #c33e37;
+    /* color: #d3d3d3; */
+    border: none;
+}
+.log-tab:hover {
+    cursor: pointer;
+    background-color: #bd6f6a;
+}
+#log-display-section {
+    border:none;
+    outline:none;
+    overflow: auto;
+    position:absolute;
+    top:30px;
+    left:5px;
+    width:461px;
+    height:400px;
+    background-color: #333333;
+    color: #d3d3d3;
+
+    /* Scrolling block */
+    scrollbar-face-color: #272727;
+    /* Track under the block */
+    scrollbar-track-color: #333333;
+    /* Small arrows to go up and down */
+    scrollbar-arrow-color: #272727;
+    /* Border around the block */
+    scrollbar-shadow-color: #333333;
+}
+#log-display-label {
+    margin-left:5px;
+}

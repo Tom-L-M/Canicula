@@ -1,0 +1,54 @@
+<div class="export-wrapper">
+    <!-- <div>  </div> For Color Scheme Changing--> 
+    <!-- <div>  </div> For Language Changing--> 
+    <div id="settings-config-wrapper">
+        <div id="settings-config-container">
+            <p id="settings-config-wrapper-title"> Application Settings: </p>
+
+            <div id="settings-procsentry-config-wrapper" class="settings-subset">
+                <!-- For procSentryInterval and decoySentryInterval -->
+                <span>Process Verification Interval:</span> &nbsp; &nbsp; &nbsp; <span>Decoy Verification Interval:</span>
+                <br/>
+                <input class="settings-input" type="text" id="procsentryinterval-editor">
+                <button class="settings-input-button" onclick="Settings.Update('procsentryinterval', Number(document.getElementById('procsentryinterval-editor').value))"><img src=".\public\assets\icons_16px\save.canpng" alt="Save"></button>
+                <input class="settings-input" type="text" id="decoycheckinterval-editor">
+                <button class="settings-input-button" onclick="Settings.Update('decoycheckinterval', Number(document.getElementById('decoycheckinterval-editor').value))"><img src=".\public\assets\icons_16px\save.canpng" alt="Save"></button>
+                <br/> 
+            </div>
+            
+            <div id="settings-decoy-locations-config-wrapper" class="settings-subset">
+                <!-- For customDecoyLocations -->
+                <span>Add Decoy Locations:</span>
+                <input class="settings-input-long" type="text" id="customdecoylocations-editor">
+                <button class="settings-input-button" onclick="Settings.AddValue(document.getElementById('customdecoylocations-editor').value)"><img src=".\public\assets\icons_16px\save.canpng" alt="Save"></button>
+                <br/>
+            </div>
+            
+            <div id="settings-decoy-locations-config-wrapper" class="settings-subset">
+                <!-- For customDecoyLocations -->
+                <span>Add Trusted Programs:</span>
+                <input class="settings-input-long" type="text" id="safeprograms-editor">
+                <button class="settings-input-button" onclick="Settings.AddTrusted(document.getElementById('safeprograms-editor').value)"><img src=".\public\assets\icons_16px\save.canpng" alt="Save"></button>
+                <br/>
+            </div>
+
+            <div id="settings-decoy-locations-removal-wrapper" class="settings-subset">
+                <!-- For customDecoyLocationsRemoval -->
+                <label for="decoylocationslist">Remove Decoy Locations:</label><br/>
+                <select class="programslist" name="decoylocationslist" id="decoylocationslist"></select>
+                <button class="settings-special-button" onclick="Settings.DeleteValue();"><img src=".\public\assets\icons_16px\remove.canpng" alt="Save"></button>
+            </div>
+
+            <div id="settings-decoy-locations-removal-wrapper" class="settings-subset">
+                <!-- For customDecoyLocationsRemoval -->
+                <label for="safeprogramslist">Remove Trusted Programs:</label><br/>
+                <select class="programslist" name="safeprogramslist" id="safeprogramslist"></select>
+                <button class="settings-special-button" onclick="Settings.DeleteTrusted();"><img src=".\public\assets\icons_16px\remove.canpng" alt="Save"></button>
+            </div>
+
+            <div class="settings-subset">
+                <button class="settings-special-button" id="settings-reset-button" onclick="Settings.SetDefaultValues();">Restore Defaults</button>
+            </div>
+        </div>
+    </div>
+</div>

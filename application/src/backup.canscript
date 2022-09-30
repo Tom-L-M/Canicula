@@ -1,0 +1,162 @@
+(function() {
+    var Backup = {}
+
+        Backup.Init = function (load) { //creates a user-custom folder if it doesen't exist
+            if (!Fso.verifyFolderExistance("." + Cfg.BackupFolder)) { Eng.Fso.CreateFolder("." + Cfg.BackupFolder); }
+            if (load) { Backup.LoadFolderSize(); }
+            return 0;
+        }
+
+        Backup.LoadFileList = function () {
+            var prev = Dbs.ReadRawData(Cfg.BackupIndexFile).split("\n");
+            var s = "";
+            for (var i = 1; i < prev.length; i++) { //first line is always empty
+                // s += "..." + prev[i].substring(prev[i].length-50) + "<br>";
+                s += prev[i] + "<br>";
+            }
+            document.getElementById("backup-current-files").innerHTML = s;
+            // document.getElementById("backup-current-files").scrollLeft = 500;
+            Backup.LoadFolderSize();
+            return 0;
+        }
+
+        Backup.AddFile = function (file) {
+            try {
+                if (!file || file == '') { return -1; }
+                if (Fso.GetFileSize() > Cfg.BackupFileSizeLimit) { 
+                    alert("Error: File is too large (" + Fso.GetFileSize()/1000 + "Mb), impossible to include file in backup section");
+                }
+                var prev = Dbs.ReadRawData(Cfg.BackupIndexFile).split("\n");
+                if (prev.includes(file)) { return -1; } 
+                prev.push(file)
+                prev = prev.join('\n');
+                Dbs.WriteRawData(Cfg.BackupIndexFile, prev);
+                var iname = file.replace(/\//gim, "\\").substring(file.lastIndexOf("\\")+1);
+                var bpath = "." + Cfg.BackupFolder + iname + Cfg.BackupFileExtension;
+                var fi = Eng.Fso.GetFile(file);
+                fi.Copy(bpath, true);
+                Backup.LoadFileList();
+            } catch (err) {
+                alert('Error: Impossible to include file in backup section')
+            }
+            return 0;
+        }
+
+        Backup.RemoveFile = function (file) {
+            try {
+                if (!file || file == '') { return -1; }
+                if (!confirm("This action is irreversible, and will delete the current backup selected. Are you sure you want to continue?")) { return -1; }
+                var prev = Dbs.ReadRawData(Cfg.BackupIndexFile).split("\n");
+                if (!prev.includes(file)) { return -1; } 
+                for (var i = 0; i < prev.length; i++) {
+                    if (prev[i].toLowerCase() == file.toLowerCase()) { 
+                        prev.splice(i, 1);
+                    }
+                }
+                Dbs.WriteRawData(Cfg.BackupIndexFile, prev.join("\n"));
+                var iname = file.replace(/\//gim, "\\").substring(file.lastIndexOf("\\")+1);
+                var bpath = "." + Cfg.BackupFolder + iname + Cfg.BackupFileExtension;
+                var fi = Eng.Fso.GetFile(bpath);
+                fi.Delete(true);
+                Backup.LoadFileList();
+            } catch (err) {
+                alert('Error: Impossible to exclude file from backup section')
+            }
+            return 0;
+        }
+
+        Backup.SyncFile = function (file) {
+            try {
+                if (!file || file == '') { return -1; }
+                var iname = file.replace(/\//gim, "\\").substring(file.lastIndexOf("\\")+1);
+                if (!Fso.verifyExistance("." + Cfg.BackupFolder + iname + Cfg.BackupFileExtension)) { return -1; }
+                var fi = Eng.Fso.GetFile(file);
+                fi.Copy("." + Cfg.BackupFolder + iname + Cfg.BackupFileExtension, true);
+            } catch (err) {
+                alert('Error: Impossible to synchronize file in backup section')
+            }
+            return 0;
+        }
+
+        Backup.UpdateBackupLock = function () {
+            if (Fso.verifyExistance(Env.WorkingDir + Cfg.lockFileDestination + Cfg.BackupLockFile)) {
+                document.getElementById("BackupLockFile-status").innerText = "ON";
+                //Backup.SyncAllFiles();
+            } else {
+                document.getElementById("BackupLockFile-status").innerText = "OFF";
+            }
+            return 0;
+        }
+
+        Backup.SwitchBackupLock = function () {
+            try {
+                var fi;
+                if (Fso.verifyExistance(Env.WorkingDir + Cfg.lockFileDestination + Cfg.BackupLockFile)) {
+                    if (confirm("Turning AutoSync OFF may decrease data security and integrity. \nAre your sure?")) {
+                        fi = Eng.Fso.GetFile(Env.WorkingDir + Cfg.lockFileDestination + Cfg.BackupLockFile).Delete(true);
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    if (confirm("Turning AutoSync ON increases data security and integrity, but may reduce machine performance and increase computer resource usage.\nAre your sure?")) {
+                        fi = Eng.Fso.CreateTextFile(Env.WorkingDir + Cfg.lockFileDestination + Cfg.BackupLockFile, true);
+                        fi.WriteLine(Cfg.lockFileContent);
+                        fi.Close();
+                    } else {
+                        return 0;
+                    }
+                }
+                Backup.UpdateBackupLock();
+            } catch (err) {
+                alert('Error: Impossible to AutoSync files in backup section');
+            }
+            return 0;
+        }
+
+        Backup.SyncAllFiles = function (quest) {
+            if (quest || quest == undefined) { if (!confirm("This action is irreversible, and may override files in backup pool. Are you sure you want to continue?")) { return -1; } }
+            
+            var prev = Dbs.ReadRawData(Cfg.BackupIndexFile).split("\n");
+            if(prev.length < 2) { return -1; }
+            for (var i = 1; i < prev.length; i++) {
+                Backup.SyncFile(prev[i]);
+            }
+            return 0;
+        }
+
+        Backup.Clear = function () {
+            if (!confirm("This action is irreversible, and will delete all the current backups. Are you sure you want to continue?")) { return -1; }
+            try {
+                var a = Eng.Fso.CreateTextFile(Cfg.BackupIndexFile,true,false);
+                a.WriteLine(" ");
+                a.Close();
+                Eng.Fso.DeleteFolder(".\\backup");
+                Eng.Fso.CreateFolder(".\\backup");
+                Backup.Init(true);
+                Backup.LoadFileList();
+            } catch (err) {
+                alert('Error: Impossible to clear files in backup section');
+            }
+        }
+
+        Backup.Restore = function (file) {
+            try {
+                if (!file || file == '') { return -1; }
+                var iname = file.replace(/\//gim, "\\").substring(file.lastIndexOf("\\")+1);
+                if (!Fso.verifyExistance("." + Cfg.BackupFolder + iname + Cfg.BackupFileExtension)) { return -1; }
+                var fi = Eng.Fso.GetFile("." + Cfg.BackupFolder + iname + Cfg.BackupFileExtension);
+                fi.Copy(file, true);
+            } catch (err) {
+                alert('Error: Impossible to restore file from backup section')
+            }
+            return 0;
+        }
+
+        Backup.LoadFolderSize = function () {
+            var size = (Number(Fso.GetStorageUsage("." + Cfg.BackupFolder))/1000000 + 0.01).toString();
+            document.getElementById("backup-size-field-status").innerText = size.substring(0, size.indexOf(".") + 3) + " Mb";
+            return 0;
+        }
+        
+    return Backup;
+}).call()
